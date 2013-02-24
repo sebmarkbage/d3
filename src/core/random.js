@@ -1,3 +1,5 @@
+var D3 = require("./core");
+
 var D3Random = {
   normal: function(_u00b5, _u03c3) {
     var n = arguments.length;
@@ -13,13 +15,10 @@ var D3Random = {
       return _u00b5 + _u03c3 * x * Math.sqrt(-2 * Math.log(r) / r);
     };
   },
-  logNormal: function(_u00b5, _u03c3) {
-    var n = arguments.length;
-    if (n < 2) _u03c3 = 1;
-    if (n < 1) _u00b5 = 0;
-    var random = D3Random.normal();
+  logNormal: function() {
+    var random = D3Random.normal.apply(D3, arguments);
     return function() {
-      return Math.exp(_u00b5 + _u03c3 * random());
+      return Math.exp(random());
     };
   },
   irwinHall: function(m) {

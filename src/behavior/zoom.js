@@ -1,7 +1,8 @@
 var D3CoreEvent = require("../core/event"),
-    d3_eventDispatch = D3CoreEvent._eventDispatch,
-    d3_eventCancel = D3CoreEvent._eventCancel,
     D3 = require("../core/core"),
+    d3_eventDispatch = D3CoreEvent._eventDispatch,
+    d3_window = D3._window,
+    d3_eventCancel = D3CoreEvent._eventCancel,
     D3Select = require("../core/selection-root"),
     D3Mouse = require("../core/mouse"),
     D3Touches = require("../core/touches"),
@@ -21,11 +22,9 @@ var D3BehaviorZoom = function() {
       touchtime; // time of last touchstart (to detect double-tap)
 
   function zoom() {
-    this
-        .on("mousedown.zoom", mousedown)
-        .on("mousewheel.zoom", mousewheel)
+    this.on("mousedown.zoom", mousedown)
         .on("mousemove.zoom", mousemove)
-        .on("DOMMouseScroll.zoom", mousewheel)
+        .on(d3_behavior_zoomWheel + ".zoom", mousewheel)
         .on("dblclick.zoom", dblclick)
         .on("touchstart.zoom", touchstart)
         .on("touchmove.zoom", touchmove)
@@ -104,10 +103,10 @@ var D3BehaviorZoom = function() {
         event_ = event.of(target, arguments),
         eventTarget = D3.event.target,
         moved = 0,
-        w = D3Select(window).on("mousemove.zoom", mousemove).on("mouseup.zoom", mouseup),
+        w = D3Select(d3_window).on("mousemove.zoom", mousemove).on("mouseup.zoom", mouseup),
         l = location(D3Mouse(target));
 
-    window.focus();
+    d3_window.focus();
     d3_eventCancel();
 
     function mousemove() {
@@ -184,36 +183,12 @@ var D3BehaviorZoom = function() {
   return D3Rebind(zoom, event, "on");
 };
 
-var d3_behavior_zoomDiv, // for interpreting mousewheel events
-    d3_behavior_zoomInfinity = [0, Infinity]; // default scale extent
+var d3_behavior_zoomInfinity = [0, Infinity]; // default scale extent
 
-function d3_behavior_zoomDelta() {
-
-  // mousewheel events are totally broken!
-  // https://bugs.webkit.org/show_bug.cgi?id=40441
-  // not only that, but Chrome and Safari differ in re. to acceleration!
-  if (!d3_behavior_zoomDiv) {
-    d3_behavior_zoomDiv = D3Select("body").append("div")
-        .style("visibility", "hidden")
-        .style("top", 0)
-        .style("height", 0)
-        .style("width", 0)
-        .style("overflow-y", "scroll")
-      .append("div")
-        .style("height", "2000px")
-      .node().parentNode;
-  }
-
-  var e = D3.event, delta;
-  try {
-    d3_behavior_zoomDiv.scrollTop = 1000;
-    d3_behavior_zoomDiv.dispatchEvent(e);
-    delta = 1000 - d3_behavior_zoomDiv.scrollTop;
-  } catch (error) {
-    delta = e.wheelDelta || (-e.detail * 5);
-  }
-
-  return delta;
-}
+// https://developer.mozilla.org/en-US/docs/Mozilla_event_reference/wheel
+var d3_behavior_zoomDelta, d3_behavior_zoomWheel
+    = "onwheel" in document ? (d3_behavior_zoomDelta = function() { return -D3.event.deltaY * (D3.event.deltaMode ? 120 : 1); }, "wheel")
+    : "onmousewheel" in document ? (d3_behavior_zoomDelta = function() { return D3.event.wheelDelta; }, "mousewheel")
+    : (d3_behavior_zoomDelta = function() { return -D3.event.detail; }, "MozMousePixelScroll");
 
 module.exports = D3BehaviorZoom;

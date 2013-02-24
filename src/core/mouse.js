@@ -1,4 +1,7 @@
-var d3_eventSource = require("./event")._eventSource,
+var D3 = require("./core"),
+    d3_eventSource = require("./event")._eventSource,
+    d3_window = D3._window,
+    d3_document = D3._document,
     D3Select = require("./selection-root");
 
 var D3Mouse = function(container) {
@@ -6,15 +9,14 @@ var D3Mouse = function(container) {
 };
 
 // https://bugs.webkit.org/show_bug.cgi?id=44083
-var d3_mouse_bug44083 = /WebKit/.test(navigator.userAgent) ? -1 : 0;
+var d3_mouse_bug44083 = /WebKit/.test(d3_window.navigator.userAgent) ? -1 : 0;
 
 function d3_mousePoint(container, e) {
   var svg = container.ownerSVGElement || container;
   if (svg.createSVGPoint) {
     var point = svg.createSVGPoint();
-    if (d3_mouse_bug44083 < 0 && (window.scrollX || window.scrollY)) {
-      svg = D3Select(document.body)
-        .append("svg")
+    if (d3_mouse_bug44083 < 0 && (d3_window.scrollX || d3_window.scrollY)) {
+      svg = D3Select(d3_document.body).append("svg")
           .style("position", "absolute")
           .style("top", 0)
           .style("left", 0);

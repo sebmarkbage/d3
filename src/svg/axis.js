@@ -7,7 +7,7 @@ var D3Scale = require("../scale/scale"),
 
 var D3SVGAxis = function() {
   var scale = D3ScaleLinear(),
-      orient = "bottom",
+      orient = d3_svg_axisDefaultOrient,
       tickMajorSize = 6,
       tickMinorSize = 6,
       tickEndSize = 6,
@@ -27,14 +27,14 @@ var D3SVGAxis = function() {
 
       // Minor ticks.
       var subticks = d3_svg_axisSubdivide(scale, ticks, tickSubdivide),
-          subtick = g.selectAll(".minor").data(subticks, String),
-          subtickEnter = subtick.enter().insert("line", "g").attr("class", "tick minor").style("opacity", 1e-6),
+          subtick = g.selectAll(".tick.minor").data(subticks, String),
+          subtickEnter = subtick.enter().insert("line", ".tick").attr("class", "tick minor").style("opacity", 1e-6),
           subtickExit = D3Transition(subtick.exit()).style("opacity", 1e-6).remove(),
           subtickUpdate = D3Transition(subtick).style("opacity", 1);
 
       // Major ticks.
-      var tick = g.selectAll("g").data(ticks, String),
-          tickEnter = tick.enter().insert("g", "path").style("opacity", 1e-6),
+      var tick = g.selectAll(".tick.major").data(ticks, String),
+          tickEnter = tick.enter().insert("g", "path").attr("class", "tick major").style("opacity", 1e-6),
           tickExit = D3Transition(tick.exit()).style("opacity", 1e-6).remove(),
           tickUpdate = D3Transition(tick).style("opacity", 1),
           tickTransform;
@@ -42,15 +42,14 @@ var D3SVGAxis = function() {
       // Domain.
       var range = d3_scaleRange(scale),
           path = g.selectAll(".domain").data([0]),
-          pathUpdate = D3Transition(path);
+          pathUpdate = (path.enter().append("path").attr("class", "domain"), D3Transition(path));
 
       // Stash a snapshot of the new scale, and retrieve the old snapshot.
       var scale1 = scale.copy(),
           scale0 = this.__chart__ || scale1;
       this.__chart__ = scale1;
 
-      path.enter().append("path").attr("class", "domain");
-      tickEnter.append("line").attr("class", "tick");
+      tickEnter.append("line");
       tickEnter.append("text");
 
       var lineEnter = tickEnter.select("line"),
@@ -142,7 +141,7 @@ var D3SVGAxis = function() {
 
   axis.orient = function(x) {
     if (!arguments.length) return orient;
-    orient = x;
+    orient = x in d3_svg_axisOrients ? x + "" : d3_svg_axisDefaultOrient;
     return axis;
   };
 
@@ -187,6 +186,9 @@ var D3SVGAxis = function() {
 
   return axis;
 };
+
+var d3_svg_axisDefaultOrient = "bottom",
+    d3_svg_axisOrients = {top: 1, right: 1, bottom: 1, left: 1};
 
 function d3_svg_axisX(selection, x) {
   selection.attr("transform", function(d) { return "translate(" + x(d) + ",0)"; });

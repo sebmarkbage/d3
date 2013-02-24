@@ -1,7 +1,8 @@
-var d3_identity = require("./identity")._identity,
+var D3 = require("./core"),
+    d3_identity = require("./identity")._identity,
+    d3_window = D3._window,
     d3_array = require("./array")._array,
     D3Dispatch = require("./dispatch"),
-    D3 = require("./core"),
     D3Rebind = require("./rebind");
 
 var D3XHR = function(url, mimeType, callback) {
@@ -9,7 +10,7 @@ var D3XHR = function(url, mimeType, callback) {
       dispatch = D3Dispatch("progress", "load", "error"),
       headers = {},
       response = d3_identity,
-      request = new (window.XDomainRequest && /^(http(s)?:)?\/\//.test(url) ? XDomainRequest : XMLHttpRequest);
+      request = new (d3_window.XDomainRequest && /^(http(s)?:)?\/\//.test(url) ? XDomainRequest : XMLHttpRequest);
 
   "onload" in request
       ? request.onload = request.onerror = respond

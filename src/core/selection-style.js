@@ -1,4 +1,5 @@
-var d3_selectionPrototype = require("./selection")._selectionPrototype;
+var d3_selectionPrototype = require("./selection")._selectionPrototype,
+    d3_window = require("./core")._window;
 
 d3_selectionPrototype.style = function(name, value, priority) {
   var n = arguments.length;
@@ -15,7 +16,7 @@ d3_selectionPrototype.style = function(name, value, priority) {
     }
 
     // For style(string), return the computed style value for the first node.
-    if (n < 2) return getComputedStyle(this.node(), null).getPropertyValue(name);
+    if (n < 2) return d3_window.getComputedStyle(this.node(), null).getPropertyValue(name);
 
     // For style(string, string) or style(string, function), use the default
     // priority. The priority is ignored for style(string, null).

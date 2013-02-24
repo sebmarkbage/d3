@@ -1,6 +1,7 @@
 var d3_transitionPrototype = require("./transition")._transitionPrototype,
     d3_interpolateByName = require("./interpolate")._interpolateByName,
-    d3_transition_tween = require("./transition-tween")._tween;
+    d3_transition_tween = require("./transition-tween")._tween,
+    d3_window = require("./core")._window;
 
 d3_transitionPrototype.style = function(name, value, priority) {
   var n = arguments.length;
@@ -35,7 +36,7 @@ d3_transitionPrototype.style = function(name, value, priority) {
     // For style(name, string) or style(name, string, priority), set the style
     // property with the specified name, using the specified priority.
     function styleString() {
-      var a = getComputedStyle(this, null).getPropertyValue(name), i;
+      var a = d3_window.getComputedStyle(this, null).getPropertyValue(name), i;
       return a !== b && (i = interpolate(a, b), function(t) { this.style.setProperty(name, i(t), priority); });
     }
 
@@ -47,7 +48,7 @@ d3_transitionPrototype.style = function(name, value, priority) {
 d3_transitionPrototype.styleTween = function(name, tween, priority) {
   if (arguments.length < 3) priority = "";
   return this.tween("style." + name, function(d, i) {
-    var f = tween.call(this, d, i, getComputedStyle(this, null).getPropertyValue(name));
+    var f = tween.call(this, d, i, d3_window.getComputedStyle(this, null).getPropertyValue(name));
     return f && function(t) { this.style.setProperty(name, f(t), priority); };
   });
 };

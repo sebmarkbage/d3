@@ -1,9 +1,10 @@
 var D3CoreEvent = require("../core/event"),
+    D3 = require("../core/core"),
     d3_eventDispatch = D3CoreEvent._eventDispatch,
     d3_scaleRange = require("../scale/scale")._scaleRange,
+    d3_window = D3._window,
     d3_eventCancel = D3CoreEvent._eventCancel,
     D3Select = require("../core/selection-root"),
-    D3 = require("../core/core"),
     D3Touches = require("../core/touches"),
     D3Mouse = require("../core/mouse"),
     D3Rebind = require("../core/rebind");
@@ -103,7 +104,7 @@ var D3SVGBrush = function() {
         origin = mouse(),
         offset;
 
-    var w = D3Select(window)
+    var w = D3Select(d3_window)
         .on("mousemove.brush", brushmove)
         .on("mouseup.brush", brushend)
         .on("touchmove.brush", brushmove)

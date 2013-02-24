@@ -1,8 +1,10 @@
-var d3_degrees = require("./core")._degrees,
+var D3 = require("./core"),
+    d3_document = D3._document,
+    d3_degrees = D3._degrees,
     D3NS = require("./ns");
 
 var D3Transform = function(string) {
-  var g = document.createElementNS(D3NS.prefix.svg, "g");
+  var g = d3_document.createElementNS(D3NS.prefix.svg, "g");
   return (D3Transform = function(string) {
     g.setAttribute("transform", string);
     var t = g.transform.baseVal.consolidate();

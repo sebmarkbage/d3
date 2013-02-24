@@ -1,6 +1,7 @@
-var d3_array = require("./array")._array;
+var d3_document = require("./core")._document,
+    d3_array = require("./array")._array;
 
-var d3_selectionRoot = require("./selection")._selection([[document]]);
+var d3_selectionRoot = require("./selection")._selection([[d3_document]]);
 
 d3_selectionRoot[0].parentNode = require("./selection")._selectRoot;
 

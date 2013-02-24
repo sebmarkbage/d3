@@ -60,10 +60,10 @@ var D3GeomVoronoi = function(vertices) {
   polygons = polygons.map(function(polygon, i) {
     var cx = vertices[i][0],
         cy = vertices[i][1],
-        angle = polygon.map(function(v) { return Math.atan2(v[0] - cx, v[1] - cy); });
-    return D3Range(polygon.length)
-        .sort(function(a, b) { return angle[a] - angle[b]; })
-        .filter(function(d, i, order) { return !i || (angle[d] - angle[order[i - 1]] > _u03b5); })
+        angle = polygon.map(function(v) { return Math.atan2(v[0] - cx, v[1] - cy); }),
+        order = D3Range(polygon.length).sort(function(a, b) { return angle[a] - angle[b]; });
+    return order
+        .filter(function(d, i) { return !i || (angle[d] - angle[order[i - 1]] > _u03b5); })
         .map(function(d) { return polygon[d]; });
   });
 

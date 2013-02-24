@@ -1,5 +1,6 @@
 var D3Selection = require("./selection"),
     d3_selectionPrototype = D3Selection._selectionPrototype,
+    d3_document = require("./core")._document,
     d3_select = D3Selection._select,
     D3NS = require("./ns");
 
@@ -11,13 +12,13 @@ d3_selectionPrototype.insert = function(name, before) {
 
   function insert() {
     return this.insertBefore(
-        document.createElementNS(this.namespaceURI, name),
+        d3_document.createElementNS(this.namespaceURI, name),
         d3_select(before, this));
   }
 
   function insertNS() {
     return this.insertBefore(
-        document.createElementNS(name.space, name.local),
+        d3_document.createElementNS(name.space, name.local),
         d3_select(before, this));
   }
 

@@ -1,7 +1,8 @@
 var D3CoreEvent = require("../core/event"),
-    d3_eventDispatch = D3CoreEvent._eventDispatch,
-    d3_eventCancel = D3CoreEvent._eventCancel,
     D3 = require("../core/core"),
+    d3_eventDispatch = D3CoreEvent._eventDispatch,
+    d3_window = D3._window,
+    d3_eventCancel = D3CoreEvent._eventCancel,
     D3Select = require("../core/selection-root"),
     D3Touches = require("../core/touches"),
     D3Mouse = require("../core/mouse"),
@@ -25,7 +26,7 @@ var D3BehaviorDrag = function() {
         origin_ = point(),
         moved = 0;
 
-    var w = D3Select(window)
+    var w = D3Select(d3_window)
         .on(touchId != null ? "touchmove.drag-" + touchId : "mousemove.drag", dragmove)
         .on(touchId != null ? "touchend.drag-" + touchId : "mouseup.drag", dragend, true);
 

@@ -1,3 +1,5 @@
+var d3_window = require("./core")._window;
+
 var d3_timer_id = 0,
     d3_timer_byId = {},
     d3_timer_queue = null,
@@ -90,11 +92,11 @@ function d3_timer_flush() {
   return then;
 }
 
-var d3_timer_frame = window.requestAnimationFrame
-    || window.webkitRequestAnimationFrame
-    || window.mozRequestAnimationFrame
-    || window.oRequestAnimationFrame
-    || window.msRequestAnimationFrame
+var d3_timer_frame = d3_window.requestAnimationFrame
+    || d3_window.webkitRequestAnimationFrame
+    || d3_window.mozRequestAnimationFrame
+    || d3_window.oRequestAnimationFrame
+    || d3_window.msRequestAnimationFrame
     || function(callback) { setTimeout(callback, 17); };
 
 module.exports = D3Timer;
