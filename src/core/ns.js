@@ -6,7 +6,7 @@ var d3_nsPrefix = {
   xmlns: "http://www.w3.org/2000/xmlns/"
 };
 
-d3.ns = {
+var D3NS = {
   prefix: d3_nsPrefix,
   qualify: function(name) {
     var i = name.indexOf(":"),
@@ -20,3 +20,5 @@ d3.ns = {
         : name;
   }
 };
+
+module.exports = D3NS;

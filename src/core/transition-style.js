@@ -1,3 +1,7 @@
+var d3_transitionPrototype = require("./transition")._transitionPrototype,
+    d3_interpolateByName = require("./interpolate")._interpolateByName,
+    d3_transition_tween = require("./transition-tween")._tween;
+
 d3_transitionPrototype.style = function(name, value, priority) {
   var n = arguments.length;
   if (n < 3) {

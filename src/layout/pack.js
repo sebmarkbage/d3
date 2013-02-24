@@ -1,5 +1,9 @@
-d3.layout.pack = function() {
-  var hierarchy = d3.layout.hierarchy().sort(d3_layout_packSort),
+var D3LayoutHierarchy = require("./hierarchy"),
+    d3_layout_treeVisitAfter = require("./tree")._treeVisitAfter,
+    d3_layout_hierarchyRebind = D3LayoutHierarchy._hierarchyRebind;
+
+var D3LayoutPack = function() {
+  var hierarchy = D3LayoutHierarchy().sort(d3_layout_packSort),
       padding = 0,
       size = [1, 1];
 
@@ -203,3 +207,5 @@ function d3_layout_packPlace(a, b, c) {
     c.y = a.y;
   }
 }
+
+module.exports = D3LayoutPack;

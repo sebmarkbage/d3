@@ -1,4 +1,7 @@
-d3.time.hour = d3_time_interval(function(date) {
+var d3_time_interval = require("./interval")._interval,
+    d3_time = require("./time")._time;
+
+var D3TimeHour = d3_time_interval(function(date) {
   var timezone = date.getTimezoneOffset() / 60;
   return new d3_time((Math.floor(date / 36e5 - timezone) + timezone) * 36e5);
 }, function(date, offset) {
@@ -7,5 +10,7 @@ d3.time.hour = d3_time_interval(function(date) {
   return date.getHours();
 });
 
-d3.time.hours = d3.time.hour.range;
-d3.time.hours.utc = d3.time.hour.utc.range;
+D3TimeHour.s = D3TimeHour.range;
+D3TimeHour.s.utc = D3TimeHour.utc.range;
+
+module.exports = D3TimeHour;

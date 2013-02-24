@@ -1,8 +1,10 @@
+var d3_voronoi_tessellate = require("./voronoi")._tessellate;
+
 /**
-* @param vertices [[x1, y1], [x2, y2], …]
-* @returns triangles [[[x1, y1], [x2, y2], [x3, y3]], …]
+* @param vertices [[x1, y1], [x2, y2], _u2026]
+* @returns triangles [[[x1, y1], [x2, y2], [x3, y3]], _u2026]
  */
-d3.geom.delaunay = function(vertices) {
+var D3GeomDelaunay = function(vertices) {
   var edges = vertices.map(function() { return []; }),
       triangles = [];
 
@@ -29,3 +31,5 @@ d3.geom.delaunay = function(vertices) {
 
   return triangles;
 };
+
+module.exports = D3GeomDelaunay;

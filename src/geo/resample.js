@@ -1,9 +1,12 @@
+var d3_geo_cartesian = require("./cartesian")._cartesian,
+    _u03b5 = require("../core/core")._u03b5;
+
 function d3_geo_resample(project) {
-  var δ2 = .5, // precision, px²
+  var _u03b42 = .5, // precision, px_u00b2
       maxDepth = 16;
 
   function resample(stream) {
-    var λ0, x0, y0, a0, b0, c0; // previous point
+    var _u03bb0, x0, y0, a0, b0, c0; // previous point
 
     var resample = {
       point: point,
@@ -24,9 +27,9 @@ function d3_geo_resample(project) {
       stream.lineStart();
     }
 
-    function linePoint(λ, φ) {
-      var c = d3_geo_cartesian([λ, φ]), p = project(λ, φ);
-      resampleLineTo(x0, y0, λ0, a0, b0, c0, x0 = p[0], y0 = p[1], λ0 = λ, a0 = c[0], b0 = c[1], c0 = c[2], maxDepth, stream);
+    function linePoint(_u03bb, _u03c6) {
+      var c = d3_geo_cartesian([_u03bb, _u03c6]), p = project(_u03bb, _u03c6);
+      resampleLineTo(x0, y0, _u03bb0, a0, b0, c0, x0 = p[0], y0 = p[1], _u03bb0 = _u03bb, a0 = c[0], b0 = c[1], c0 = c[2], maxDepth, stream);
       stream.point(x0, y0);
     }
 
@@ -36,17 +39,17 @@ function d3_geo_resample(project) {
     }
 
     function polygonLineStart() {
-      var λ00, φ00, x00, y00, a00, b00, c00; // first point
+      var _u03bb00, _u03c600, x00, y00, a00, b00, c00; // first point
 
       lineStart();
 
-      resample.point = function(λ, φ) {
-        linePoint(λ00 = λ, φ00 = φ), x00 = x0, y00 = y0, a00 = a0, b00 = b0, c00 = c0;
+      resample.point = function(_u03bb, _u03c6) {
+        linePoint(_u03bb00 = _u03bb, _u03c600 = _u03c6), x00 = x0, y00 = y0, a00 = a0, b00 = b0, c00 = c0;
         resample.point = linePoint;
       };
 
       resample.lineEnd = function() {
-        resampleLineTo(x0, y0, λ0, a0, b0, c0, x00, y00, λ00, a00, b00, c00, maxDepth, stream);
+        resampleLineTo(x0, y0, _u03bb0, a0, b0, c0, x00, y00, _u03bb00, a00, b00, c00, maxDepth, stream);
         resample.lineEnd = lineEnd;
         lineEnd();
       };
@@ -55,36 +58,38 @@ function d3_geo_resample(project) {
     return resample;
   }
 
-  function resampleLineTo(x0, y0, λ0, a0, b0, c0, x1, y1, λ1, a1, b1, c1, depth, stream) {
+  function resampleLineTo(x0, y0, _u03bb0, a0, b0, c0, x1, y1, _u03bb1, a1, b1, c1, depth, stream) {
     var dx = x1 - x0,
         dy = y1 - y0,
         d2 = dx * dx + dy * dy;
-    if (d2 > 4 * δ2 && depth--) {
+    if (d2 > 4 * _u03b42 && depth--) {
       var a = a0 + a1,
           b = b0 + b1,
           c = c0 + c1,
           m = Math.sqrt(a * a + b * b + c * c),
-          φ2 = Math.asin(c /= m),
-          λ2 = Math.abs(Math.abs(c) - 1) < ε ? (λ0 + λ1) / 2 : Math.atan2(b, a),
-          p = project(λ2, φ2),
+          _u03c62 = Math.asin(c /= m),
+          _u03bb2 = Math.abs(Math.abs(c) - 1) < _u03b5 ? (_u03bb0 + _u03bb1) / 2 : Math.atan2(b, a),
+          p = project(_u03bb2, _u03c62),
           x2 = p[0],
           y2 = p[1],
           dx2 = x2 - x0,
           dy2 = y2 - y0,
           dz = dy * dx2 - dx * dy2;
-      if (dz * dz / d2 > δ2 || Math.abs((dx * dx2 + dy * dy2) / d2 - .5) > .3) {
-        resampleLineTo(x0, y0, λ0, a0, b0, c0, x2, y2, λ2, a /= m, b /= m, c, depth, stream);
+      if (dz * dz / d2 > _u03b42 || Math.abs((dx * dx2 + dy * dy2) / d2 - .5) > .3) {
+        resampleLineTo(x0, y0, _u03bb0, a0, b0, c0, x2, y2, _u03bb2, a /= m, b /= m, c, depth, stream);
         stream.point(x2, y2);
-        resampleLineTo(x2, y2, λ2, a, b, c, x1, y1, λ1, a1, b1, c1, depth, stream);
+        resampleLineTo(x2, y2, _u03bb2, a, b, c, x1, y1, _u03bb1, a1, b1, c1, depth, stream);
       }
     }
   }
 
   resample.precision = function(_) {
-    if (!arguments.length) return Math.sqrt(δ2);
-    maxDepth = (δ2 = _ * _) > 0 && 16;
+    if (!arguments.length) return Math.sqrt(_u03b42);
+    maxDepth = (_u03b42 = _ * _) > 0 && 16;
     return resample;
   };
 
   return resample;
 }
+
+exports._resample = d3_geo_resample;

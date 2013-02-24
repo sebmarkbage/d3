@@ -1,6 +1,13 @@
-d3.geo.area = function(object) {
+var D3 = require("../core/core"),
+    _u03c0 = D3._u03c0,
+    d3_noop = require("../core/noop")._noop,
+    d3_radians = D3._radians,
+    _u03b5 = D3._u03b5,
+    D3GeoStream = require("./stream");
+
+var D3GeoArea = function(object) {
   d3_geo_areaSum = 0;
-  d3.geo.stream(object, d3_geo_area);
+  D3GeoStream(object, d3_geo_area);
   return d3_geo_areaSum;
 };
 
@@ -8,7 +15,7 @@ var d3_geo_areaSum,
     d3_geo_areaRing;
 
 var d3_geo_area = {
-  sphere: function() { d3_geo_areaSum += 4 * π; },
+  sphere: function() { d3_geo_areaSum += 4 * _u03c0; },
   point: d3_noop,
   lineStart: d3_noop,
   lineEnd: d3_noop,
@@ -19,54 +26,56 @@ var d3_geo_area = {
     d3_geo_area.lineStart = d3_geo_areaRingStart;
   },
   polygonEnd: function() {
-    d3_geo_areaSum += d3_geo_areaRing < 0 ? 4 * π + d3_geo_areaRing : d3_geo_areaRing;
+    d3_geo_areaSum += d3_geo_areaRing < 0 ? 4 * _u03c0 + d3_geo_areaRing : d3_geo_areaRing;
     d3_geo_area.lineStart = d3_geo_area.lineEnd = d3_geo_area.point = d3_noop;
   }
 };
 
 function d3_geo_areaRingStart() {
-  var λ00, φ00, λ1, λ0, φ0, cosφ0, sinφ0; // start point and two previous points
+  var _u03bb00, _u03c600, _u03bb1, _u03bb0, _u03c60, cos_u03c60, sin_u03c60; // start point and two previous points
 
-  // For the first point, …
-  d3_geo_area.point = function(λ, φ) {
+  // For the first point, _u2026
+  d3_geo_area.point = function(_u03bb, _u03c6) {
     d3_geo_area.point = nextPoint;
-    λ1 = λ0 = (λ00 = λ) * d3_radians, φ0 = (φ00 = φ) * d3_radians, cosφ0 = Math.cos(φ0), sinφ0 = Math.sin(φ0);
+    _u03bb1 = _u03bb0 = (_u03bb00 = _u03bb) * d3_radians, _u03c60 = (_u03c600 = _u03c6) * d3_radians, cos_u03c60 = Math.cos(_u03c60), sin_u03c60 = Math.sin(_u03c60);
   };
 
-  // For subsequent points, …
-  function nextPoint(λ, φ) {
-    λ *= d3_radians, φ *= d3_radians;
+  // For subsequent points, _u2026
+  function nextPoint(_u03bb, _u03c6) {
+    _u03bb *= d3_radians, _u03c6 *= d3_radians;
 
     // If both the current point and the previous point are polar, skip this point.
-    if (Math.abs(Math.abs(φ0) - π / 2) < ε && Math.abs(Math.abs(φ) - π / 2) < ε) return;
-    var cosφ = Math.cos(φ), sinφ = Math.sin(φ);
+    if (Math.abs(Math.abs(_u03c60) - _u03c0 / 2) < _u03b5 && Math.abs(Math.abs(_u03c6) - _u03c0 / 2) < _u03b5) return;
+    var cos_u03c6 = Math.cos(_u03c6), sin_u03c6 = Math.sin(_u03c6);
 
     // If the previous point is at the north pole, then compute lune area.
-    if (Math.abs(φ0 - π / 2) < ε) d3_geo_areaRing += (λ - λ1) * 2;
+    if (Math.abs(_u03c60 - _u03c0 / 2) < _u03b5) d3_geo_areaRing += (_u03bb - _u03bb1) * 2;
 
     // Area of spherical triangle with vertices at south pole, previous point
-    // and current point = ER², where E is the spherical excess, and in our
+    // and current point = ER_u00b2, where E is the spherical excess, and in our
     // case, R = 1.
     else {
-      var dλ = λ - λ0,
-          cosdλ = Math.cos(dλ),
+      var d_u03bb = _u03bb - _u03bb0,
+          cosd_u03bb = Math.cos(d_u03bb),
           // Distance from previous point to current point, well-conditioned
           // for all angles.
-          d = Math.atan2(Math.sqrt((d = cosφ * Math.sin(dλ)) * d + (d = cosφ0 * sinφ - sinφ0 * cosφ * cosdλ) * d), sinφ0 * sinφ + cosφ0 * cosφ * cosdλ),
+          d = Math.atan2(Math.sqrt((d = cos_u03c6 * Math.sin(d_u03bb)) * d + (d = cos_u03c60 * sin_u03c6 - sin_u03c60 * cos_u03c6 * cosd_u03bb) * d), sin_u03c60 * sin_u03c6 + cos_u03c60 * cos_u03c6 * cosd_u03bb),
           // Half the semiperimeter (a + b + c) / 2, where a, b and c are the
           // lengths of the triangle sides.
-          s = (d + π + φ0 + φ) / 4;
-      // Compute the spherical excess E using l’Huilier’s theorem,
-      // tan(E / 4) = √[tan(s)tan(s - a / 2)tan(s - b / 2)tan(s - c / 2)].
-      d3_geo_areaRing += (dλ < 0 && dλ > -π || dλ > π ? -4 : 4) * Math.atan(Math.sqrt(Math.abs(Math.tan(s) * Math.tan(s - d / 2) * Math.tan(s - π / 4 - φ0 / 2) * Math.tan(s - π / 4 - φ / 2))));
+          s = (d + _u03c0 + _u03c60 + _u03c6) / 4;
+      // Compute the spherical excess E using l_u2019Huilier_u2019s theorem,
+      // tan(E / 4) = _u221a[tan(s)tan(s - a / 2)tan(s - b / 2)tan(s - c / 2)].
+      d3_geo_areaRing += (d_u03bb < 0 && d_u03bb > -_u03c0 || d_u03bb > _u03c0 ? -4 : 4) * Math.atan(Math.sqrt(Math.abs(Math.tan(s) * Math.tan(s - d / 2) * Math.tan(s - _u03c0 / 4 - _u03c60 / 2) * Math.tan(s - _u03c0 / 4 - _u03c6 / 2))));
     }
 
     // Advance the previous points.
-    λ1 = λ0, λ0 = λ, φ0 = φ, cosφ0 = cosφ, sinφ0 = sinφ;
+    _u03bb1 = _u03bb0, _u03bb0 = _u03bb, _u03c60 = _u03c6, cos_u03c60 = cos_u03c6, sin_u03c60 = sin_u03c6;
   }
 
   // For the last point, return to the start.
   d3_geo_area.lineEnd = function() {
-    nextPoint(λ00, φ00);
+    nextPoint(_u03bb00, _u03c600);
   };
 }
+
+module.exports = D3GeoArea;

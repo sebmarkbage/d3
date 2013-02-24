@@ -1,8 +1,13 @@
+var D3Selection = require("./selection"),
+    d3_selectionPrototype = D3Selection._selectionPrototype,
+    d3_select = D3Selection._select,
+    D3NS = require("./ns");
+
 // TODO insert(node, function)?
 // TODO insert(function, string)?
 // TODO insert(function, function)?
 d3_selectionPrototype.insert = function(name, before) {
-  name = d3.ns.qualify(name);
+  name = D3NS.qualify(name);
 
   function insert() {
     return this.insertBefore(

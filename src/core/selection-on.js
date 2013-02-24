@@ -1,3 +1,7 @@
+var d3_selectionPrototype = require("./selection")._selectionPrototype,
+    d3_array = require("./array")._array,
+    D3 = require("./core");
+
 d3_selectionPrototype.on = function(type, listener, capture) {
   var n = arguments.length;
   if (n < 3) {
@@ -43,13 +47,13 @@ function d3_selection_on(type, listener, capture) {
     wrapper._ = listener;
 
     function wrapper(e) {
-      var o = d3.event; // Events can be reentrant (e.g., focus).
-      d3.event = e;
+      var o = D3.event; // Events can be reentrant (e.g., focus).
+      D3.event = e;
       args[0] = node.__data__;
       try {
         listener.apply(node, args);
       } finally {
-        d3.event = o;
+        D3.event = o;
       }
     }
   }

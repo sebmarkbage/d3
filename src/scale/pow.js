@@ -1,5 +1,12 @@
-d3.scale.pow = function() {
-  return d3_scale_pow(d3.scale.linear(), 1);
+var D3ScaleLinear = require("./linear"),
+    d3_scale_linearTicks = D3ScaleLinear._linearTicks,
+    d3_scale_linearTickFormat = D3ScaleLinear._linearTickFormat,
+    d3_scale_nice = require("./nice")._nice,
+    d3_scale_linearNice = D3ScaleLinear._linearNice,
+    d3_scale_linearRebind = D3ScaleLinear._linearRebind;
+
+var D3ScalePow = function() {
+  return d3_scale_pow(D3ScaleLinear(), 1);
 };
 
 function d3_scale_pow(linear, exponent) {
@@ -52,3 +59,5 @@ function d3_scale_powPow(e) {
     return x < 0 ? -Math.pow(-x, e) : Math.pow(x, e);
   };
 }
+
+module.exports = D3ScalePow;

@@ -1,5 +1,7 @@
-d3.time.year = d3_time_interval(function(date) {
-  date = d3.time.day(date);
+var d3_time_interval = require("./interval")._interval;
+
+var D3TimeYear = d3_time_interval(function(date) {
+  date = require("./day")(date);
   date.setMonth(0, 1);
   return date;
 }, function(date, offset) {
@@ -8,5 +10,7 @@ d3.time.year = d3_time_interval(function(date) {
   return date.getFullYear();
 });
 
-d3.time.years = d3.time.year.range;
-d3.time.years.utc = d3.time.year.utc.range;
+D3TimeYear.s = D3TimeYear.range;
+D3TimeYear.s.utc = D3TimeYear.utc.range;
+
+module.exports = D3TimeYear;

@@ -1,5 +1,11 @@
-d3.median = function(array, f) {
+var d3_number = require("./number")._number,
+    D3Quantile = require("./quantile"),
+    D3Ascending = require("./ascending");
+
+var D3Median = function(array, f) {
   if (arguments.length > 1) array = array.map(f);
   array = array.filter(d3_number);
-  return array.length ? d3.quantile(array.sort(d3.ascending), .5) : undefined;
+  return array.length ? D3Quantile(array.sort(D3Ascending), .5) : undefined;
 };
+
+module.exports = D3Median;

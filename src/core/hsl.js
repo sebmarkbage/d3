@@ -1,7 +1,9 @@
-d3.hsl = function(h, s, l) {
+var d3_Color = require("./color")._Color;
+
+var D3HSL = function(h, s, l) {
   return arguments.length === 1
       ? (h instanceof d3_Hsl ? d3_hsl(h.h, h.s, h.l)
-      : d3_rgb_parse("" + h, d3_rgb_hsl, d3_hsl))
+      : require("./rgb")._parse("" + h, require("./rgb")._hsl, d3_hsl))
       : d3_hsl(+h, +s, +l);
 };
 
@@ -57,5 +59,10 @@ function d3_hsl_rgb(h, s, l) {
     return Math.round(v(h) * 255);
   }
 
-  return d3_rgb(vv(h + 120), vv(h), vv(h - 120));
+  return require("./rgb")._rgb(vv(h + 120), vv(h), vv(h - 120));
 }
+
+D3HSL._hsl = d3_hsl;
+D3HSL._rgb = d3_hsl_rgb;
+
+module.exports = D3HSL;

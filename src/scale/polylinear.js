@@ -1,3 +1,5 @@
+var D3Bisect = require("../core/bisect");
+
 function d3_scale_polylinear(domain, range, uninterpolate, interpolate) {
   var u = [],
       i = [],
@@ -16,7 +18,9 @@ function d3_scale_polylinear(domain, range, uninterpolate, interpolate) {
   }
 
   return function(x) {
-    var j = d3.bisect(domain, x, 1, k) - 1;
+    var j = D3Bisect(domain, x, 1, k) - 1;
     return i[j](u[j](x));
   };
 }
+
+exports._polylinear = d3_scale_polylinear;

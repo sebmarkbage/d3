@@ -1,4 +1,6 @@
-d3.geo.interpolate = function(source, target) {
+var d3_radians = require("../core/core")._radians;
+
+var D3GeoInterpolate = function(source, target) {
   return d3_geo_interpolate(
     source[0] * d3_radians, source[1] * d3_radians,
     target[0] * d3_radians, target[1] * d3_radians
@@ -33,3 +35,5 @@ function d3_geo_interpolate(x0, y0, x1, y1) {
 
   return interpolate;
 };
+
+module.exports = D3GeoInterpolate;

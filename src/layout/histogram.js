@@ -1,4 +1,9 @@
-d3.layout.histogram = function() {
+var d3_functor = require("../core/functor")._functor,
+    D3Bisect = require("../core/bisect"),
+    D3Min = require("../core/min"),
+    D3Max = require("../core/max");
+
+var D3LayoutHistogram = function() {
   var frequency = true,
       valuer = Number,
       ranger = d3_layout_histogramRange,
@@ -28,7 +33,7 @@ d3.layout.histogram = function() {
       i = -1; while(++i < n) {
         x = values[i];
         if (x >= range[0] && x <= range[1]) {
-          bin = bins[d3.bisect(thresholds, x, 1, m) - 1];
+          bin = bins[D3Bisect(thresholds, x, 1, m) - 1];
           bin.y += k;
           bin.push(data[i]);
         }
@@ -100,5 +105,7 @@ function d3_layout_histogramBinFixed(range, n) {
 }
 
 function d3_layout_histogramRange(values) {
-  return [d3.min(values), d3.max(values)];
+  return [D3Min(values), D3Max(values)];
 }
+
+module.exports = D3LayoutHistogram;

@@ -1,6 +1,12 @@
-d3.xhr = function(url, mimeType, callback) {
+var d3_identity = require("./identity")._identity,
+    d3_array = require("./array")._array,
+    D3Dispatch = require("./dispatch"),
+    D3 = require("./core"),
+    D3Rebind = require("./rebind");
+
+var D3XHR = function(url, mimeType, callback) {
   var xhr = {},
-      dispatch = d3.dispatch("progress", "load", "error"),
+      dispatch = D3Dispatch("progress", "load", "error"),
       headers = {},
       response = d3_identity,
       request = new (window.XDomainRequest && /^(http(s)?:)?\/\//.test(url) ? XDomainRequest : XMLHttpRequest);
@@ -17,10 +23,10 @@ d3.xhr = function(url, mimeType, callback) {
   }
 
   request.onprogress = function(event) {
-    var o = d3.event;
-    d3.event = event;
+    var o = D3.event;
+    D3.event = event;
     try { dispatch.progress.call(xhr, request); }
-    finally { d3.event = o; }
+    finally { D3.event = o; }
   };
 
   xhr.header = function(name, value) {
@@ -69,7 +75,7 @@ d3.xhr = function(url, mimeType, callback) {
     return xhr;
   };
 
-  d3.rebind(xhr, dispatch, "on");
+  D3Rebind(xhr, dispatch, "on");
 
   if (arguments.length === 2 && typeof mimeType === "function") callback = mimeType, mimeType = null;
   return callback == null ? xhr : xhr.get(d3_xhr_fixCallback(callback));
@@ -80,3 +86,5 @@ function d3_xhr_fixCallback(callback) {
       ? function(error, request) { callback(error == null ? request : null); }
       : callback;
 }
+
+module.exports = D3XHR;

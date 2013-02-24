@@ -1,5 +1,10 @@
+var d3_identity = require("../core/identity")._identity,
+    D3Permute = require("../core/permute"),
+    D3Map = require("../core/map"),
+    D3Range = require("../core/range");
+
 // data is two-dimensional array of x,y; we populate y0
-d3.layout.stack = function() {
+var D3LayoutStack = function() {
   var values = d3_identity,
       order = d3_layout_stackOrderDefault,
       offset = d3_layout_stackOffsetZero,
@@ -23,10 +28,10 @@ d3.layout.stack = function() {
 
     // Compute the order of series, and permute them.
     var orders = order.call(stack, points, index);
-    series = d3.permute(series, orders);
-    points = d3.permute(points, orders);
+    series = D3Permute(series, orders);
+    points = D3Permute(points, orders);
 
-    // Compute the baseline…
+    // Compute the baseline_u2026
     var offsets = offset.call(stack, points, index);
 
     // And propagate it to other series.
@@ -97,7 +102,7 @@ function d3_layout_stackOut(d, y0, y) {
   d.y = y;
 }
 
-var d3_layout_stackOrders = d3.map({
+var d3_layout_stackOrders = D3Map({
 
   "inside-out": function(data) {
     var n = data.length,
@@ -105,7 +110,7 @@ var d3_layout_stackOrders = d3.map({
         j,
         max = data.map(d3_layout_stackMaxIndex),
         sums = data.map(d3_layout_stackReduceSum),
-        index = d3.range(n).sort(function(a, b) { return max[a] - max[b]; }),
+        index = D3Range(n).sort(function(a, b) { return max[a] - max[b]; }),
         top = 0,
         bottom = 0,
         tops = [],
@@ -124,14 +129,14 @@ var d3_layout_stackOrders = d3.map({
   },
 
   "reverse": function(data) {
-    return d3.range(data.length).reverse();
+    return D3Range(data.length).reverse();
   },
 
   "default": d3_layout_stackOrderDefault
 
 });
 
-var d3_layout_stackOffsets = d3.map({
+var d3_layout_stackOffsets = D3Map({
 
   "silhouette": function(data) {
     var n = data.length,
@@ -205,7 +210,7 @@ var d3_layout_stackOffsets = d3.map({
 });
 
 function d3_layout_stackOrderDefault(data) {
-  return d3.range(data.length);
+  return D3Range(data.length);
 }
 
 function d3_layout_stackOffsetZero(data) {
@@ -238,3 +243,5 @@ function d3_layout_stackReduceSum(d) {
 function d3_layout_stackSum(p, d) {
   return p + d[1];
 }
+
+module.exports = D3LayoutStack;

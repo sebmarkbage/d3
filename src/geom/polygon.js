@@ -1,4 +1,4 @@
-d3.geom.polygon = function(coordinates) {
+var D3GeomPolygon = function(coordinates) {
 
   coordinates.area = function() {
     var i = 0,
@@ -78,3 +78,5 @@ function d3_geom_polygonIntersect(c, d, a, b) {
       ua = (x43 * (y1 - y3) - y43 * (x1 - x3)) / (y43 * x21 - x43 * y21);
   return [x1 + ua * x21, y1 + ua * y21];
 }
+
+module.exports = D3GeomPolygon;

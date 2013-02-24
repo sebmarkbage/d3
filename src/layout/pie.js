@@ -1,8 +1,12 @@
-d3.layout.pie = function() {
+var _u03c0 = require("../core/core")._u03c0,
+    D3Sum = require("../core/sum"),
+    D3Range = require("../core/range");
+
+var D3LayoutPie = function() {
   var value = Number,
       sort = d3_layout_pieSortByValue,
       startAngle = 0,
-      endAngle = 2 * π;
+      endAngle = 2 * _u03c0;
 
   function pie(data) {
 
@@ -18,10 +22,10 @@ d3.layout.pie = function() {
     var k = ((typeof endAngle === "function"
         ? endAngle.apply(this, arguments)
         : endAngle) - startAngle)
-        / d3.sum(values);
+        / D3Sum(values);
 
     // Optionally sort the data.
-    var index = d3.range(data.length);
+    var index = D3Range(data.length);
     if (sort != null) index.sort(sort === d3_layout_pieSortByValue
         ? function(i, j) { return values[j] - values[i]; }
         : function(i, j) { return sort(data[i], data[j]); });
@@ -77,7 +81,7 @@ d3.layout.pie = function() {
   };
 
   /**
-   * Specifies the overall end angle of the pie chart. Defaults to 2π. The
+   * Specifies the overall end angle of the pie chart. Defaults to 2_u03c0. The
    * end angle can be specified either as a constant or as a function; in the
    * case of a function, it is evaluated once per array (as opposed to per
    * element).
@@ -92,3 +96,5 @@ d3.layout.pie = function() {
 };
 
 var d3_layout_pieSortByValue = {};
+
+module.exports = D3LayoutPie;

@@ -1,4 +1,6 @@
-d3.mean = function(array, f) {
+var d3_number = require("./number")._number;
+
+var D3Mean = function(array, f) {
   var n = array.length,
       a,
       m = 0,
@@ -11,3 +13,5 @@ d3.mean = function(array, f) {
   }
   return j ? m : undefined;
 };
+
+module.exports = D3Mean;

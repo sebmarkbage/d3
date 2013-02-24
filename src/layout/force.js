@@ -1,7 +1,16 @@
+var d3_functor = require("../core/functor")._functor,
+    d3_identity = require("../core/identity")._identity,
+    D3Dispatch = require("../core/dispatch"),
+    D3GeomQuadtree = require("../geom/quadtree"),
+    D3Timer = require("../core/timer"),
+    D3BehaviorDrag = require("../behavior/drag"),
+    D3 = require("../core/core"),
+    D3Rebind = require("../core/rebind");
+
 // A rudimentary force layout using Gauss-Seidel.
-d3.layout.force = function() {
+var D3LayoutForce = function() {
   var force = {},
-      event = d3.dispatch("start", "tick", "end"),
+      event = D3Dispatch("start", "tick", "end"),
       size = [1, 1],
       drag,
       alpha,
@@ -92,7 +101,7 @@ d3.layout.force = function() {
 
     // compute quadtree center of mass and apply charge forces
     if (charge) {
-      d3_layout_forceAccumulate(q = d3.geom.quadtree(nodes), alpha, charges);
+      d3_layout_forceAccumulate(q = D3GeomQuadtree(nodes), alpha, charges);
       i = -1; while (++i < n) {
         if (!(o = nodes[i]).fixed) {
           q.visit(repulse(o));
@@ -180,7 +189,7 @@ d3.layout.force = function() {
       else alpha = 0; // or, next tick will dispatch "end"
     } else if (x > 0) { // otherwise, fire it up!
       event.start({type: "start", alpha: alpha = x});
-      d3.timer(force.tick);
+      D3Timer(force.tick);
     }
 
     return force;
@@ -271,7 +280,7 @@ d3.layout.force = function() {
 
   // use `node.call(force.drag)` to make nodes draggable
   force.drag = function() {
-    if (!drag) drag = d3.behavior.drag()
+    if (!drag) drag = D3BehaviorDrag()
         .origin(d3_identity)
         .on("dragstart", d3_layout_forceDragstart)
         .on("drag", dragmove)
@@ -283,11 +292,11 @@ d3.layout.force = function() {
   };
 
   function dragmove(d) {
-    d.px = d3.event.x, d.py = d3.event.y;
+    d.px = D3.event.x, d.py = D3.event.y;
     force.resume(); // restart annealing
   }
 
-  return d3.rebind(force, event, "on");
+  return D3Rebind(force, event, "on");
 };
 
 // The fixed property has three bits:
@@ -353,3 +362,5 @@ function d3_layout_forceLinkDistance() {
 function d3_layout_forceLinkStrength() {
   return 1;
 }
+
+module.exports = D3LayoutForce;

@@ -1,4 +1,13 @@
-d3.behavior.zoom = function() {
+var D3CoreEvent = require("../core/event"),
+    d3_eventDispatch = D3CoreEvent._eventDispatch,
+    d3_eventCancel = D3CoreEvent._eventCancel,
+    D3 = require("../core/core"),
+    D3Select = require("../core/selection-root"),
+    D3Mouse = require("../core/mouse"),
+    D3Touches = require("../core/touches"),
+    D3Rebind = require("../core/rebind");
+
+var D3BehaviorZoom = function() {
   var translate = [0, 0],
       translate0, // translate when we started zooming (to avoid drift)
       scale = 1,
@@ -86,31 +95,31 @@ d3.behavior.zoom = function() {
 
   function dispatch(event) {
     rescale();
-    d3.event.preventDefault();
+    D3.event.preventDefault();
     event({type: "zoom", scale: scale, translate: translate});
   }
 
   function mousedown() {
     var target = this,
         event_ = event.of(target, arguments),
-        eventTarget = d3.event.target,
+        eventTarget = D3.event.target,
         moved = 0,
-        w = d3.select(window).on("mousemove.zoom", mousemove).on("mouseup.zoom", mouseup),
-        l = location(d3.mouse(target));
+        w = D3Select(window).on("mousemove.zoom", mousemove).on("mouseup.zoom", mouseup),
+        l = location(D3Mouse(target));
 
     window.focus();
     d3_eventCancel();
 
     function mousemove() {
       moved = 1;
-      translateTo(d3.mouse(target), l);
+      translateTo(D3Mouse(target), l);
       dispatch(event_);
     }
 
     function mouseup() {
       if (moved) d3_eventCancel();
       w.on("mousemove.zoom", null).on("mouseup.zoom", null);
-      if (moved && d3.event.target === eventTarget) w.on("click.zoom", click, true);
+      if (moved && D3.event.target === eventTarget) w.on("click.zoom", click, true);
     }
 
     function click() {
@@ -120,9 +129,9 @@ d3.behavior.zoom = function() {
   }
 
   function mousewheel() {
-    if (!translate0) translate0 = location(d3.mouse(this));
+    if (!translate0) translate0 = location(D3Mouse(this));
     scaleTo(Math.pow(2, d3_behavior_zoomDelta() * .002) * scale);
-    translateTo(d3.mouse(this), translate0);
+    translateTo(D3Mouse(this), translate0);
     dispatch(event.of(this, arguments));
   }
 
@@ -131,14 +140,14 @@ d3.behavior.zoom = function() {
   }
 
   function dblclick() {
-    var p = d3.mouse(this), l = location(p), k = Math.log(scale) / Math.LN2;
-    scaleTo(Math.pow(2, d3.event.shiftKey ? Math.ceil(k) - 1 : Math.floor(k) + 1));
+    var p = D3Mouse(this), l = location(p), k = Math.log(scale) / Math.LN2;
+    scaleTo(Math.pow(2, D3.event.shiftKey ? Math.ceil(k) - 1 : Math.floor(k) + 1));
     translateTo(p, l);
     dispatch(event.of(this, arguments));
   }
 
   function touchstart() {
-    var touches = d3.touches(this),
+    var touches = D3Touches(this),
         now = Date.now();
 
     scale0 = scale;
@@ -158,21 +167,21 @@ d3.behavior.zoom = function() {
   }
 
   function touchmove() {
-    var touches = d3.touches(this),
+    var touches = D3Touches(this),
         p0 = touches[0],
         l0 = translate0[p0.identifier];
     if (p1 = touches[1]) {
       var p1, l1 = translate0[p1.identifier];
       p0 = [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2];
       l0 = [(l0[0] + l1[0]) / 2, (l0[1] + l1[1]) / 2];
-      scaleTo(d3.event.scale * scale0);
+      scaleTo(D3.event.scale * scale0);
     }
     translateTo(p0, l0);
     touchtime = null;
     dispatch(event.of(this, arguments));
   }
 
-  return d3.rebind(zoom, event, "on");
+  return D3Rebind(zoom, event, "on");
 };
 
 var d3_behavior_zoomDiv, // for interpreting mousewheel events
@@ -184,7 +193,7 @@ function d3_behavior_zoomDelta() {
   // https://bugs.webkit.org/show_bug.cgi?id=40441
   // not only that, but Chrome and Safari differ in re. to acceleration!
   if (!d3_behavior_zoomDiv) {
-    d3_behavior_zoomDiv = d3.select("body").append("div")
+    d3_behavior_zoomDiv = D3Select("body").append("div")
         .style("visibility", "hidden")
         .style("top", 0)
         .style("height", 0)
@@ -195,7 +204,7 @@ function d3_behavior_zoomDelta() {
       .node().parentNode;
   }
 
-  var e = d3.event, delta;
+  var e = D3.event, delta;
   try {
     d3_behavior_zoomDiv.scrollTop = 1000;
     d3_behavior_zoomDiv.dispatchEvent(e);
@@ -206,3 +215,5 @@ function d3_behavior_zoomDelta() {
 
   return delta;
 }
+
+module.exports = D3BehaviorZoom;

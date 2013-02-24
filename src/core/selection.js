@@ -1,3 +1,5 @@
+var d3_arraySubclass = require("./array")._arraySubclass;
+
 function d3_selection(groups) {
   d3_arraySubclass(groups, d3_selectionPrototype);
   return groups;
@@ -18,8 +20,17 @@ if (typeof Sizzle === "function") {
 
 var d3_selectionPrototype = [];
 
-d3.selection = function() {
-  return d3_selectionRoot;
+var D3Selection = function() {
+  return require("./selection-root")._selectionRoot;
 };
 
-d3.selection.prototype = d3_selectionPrototype;
+D3Selection.prototype = d3_selectionPrototype;
+
+D3Selection._selectionPrototype = d3_selectionPrototype;
+D3Selection._select = d3_select;
+D3Selection._selectAll = d3_selectAll;
+D3Selection._selectRoot = d3_selectRoot;
+D3Selection._selectMatches = d3_selectMatches;
+D3Selection._selection = d3_selection;
+
+module.exports = D3Selection;

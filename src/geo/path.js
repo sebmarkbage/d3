@@ -1,7 +1,26 @@
+var D3GeoPathArea = require("./path-area"),
+    D3GeoCentroid = require("./centroid"),
+    D3 = require("../core/core"),
+    d3_geo_pathAreaSum = D3GeoPathArea._pathAreaSum,
+    d3_geo_pathArea = D3GeoPathArea._pathArea,
+    d3_geo_centroidDimension = D3GeoCentroid._centroidDimension,
+    d3_geo_centroidX = D3GeoCentroid._centroidX,
+    d3_geo_centroidY = D3GeoCentroid._centroidY,
+    d3_geo_centroidZ = D3GeoCentroid._centroidZ,
+    d3_geo_pathCentroid = require("./path-centroid")._pathCentroid,
+    d3_geo_bounds = require("./bounds")._bounds,
+    d3_identity = require("../core/identity")._identity,
+    d3_geo_pathContext = require("./path-context")._pathContext,
+    d3_geo_resample = require("./resample")._resample,
+    d3_degrees = D3._degrees,
+    d3_radians = D3._radians,
+    D3GeoStream = require("./stream"),
+    D3GeoAlbersUsa = require("./albers-usa");
+
 // TODO better encapsulation for d3_geo_pathArea; move to area.js
 // TODO better encapsulation for d3_geo_pathCentroid; move to centroid.js
 
-d3.geo.path = function() {
+var D3GeoPath = function() {
   var pointRadius = 4.5,
       projection,
       context,
@@ -9,7 +28,7 @@ d3.geo.path = function() {
       contextStream;
 
   function path(object) {
-    if (object) d3.geo.stream(object, projectStream(
+    if (object) D3GeoStream(object, projectStream(
         contextStream.pointRadius(typeof pointRadius === "function"
             ? +pointRadius.apply(this, arguments)
             : pointRadius)));
@@ -18,13 +37,13 @@ d3.geo.path = function() {
 
   path.area = function(object) {
     d3_geo_pathAreaSum = 0;
-    d3.geo.stream(object, projectStream(d3_geo_pathArea));
+    D3GeoStream(object, projectStream(d3_geo_pathArea));
     return d3_geo_pathAreaSum;
   };
 
   path.centroid = function(object) {
     d3_geo_centroidDimension = d3_geo_centroidX = d3_geo_centroidY = d3_geo_centroidZ = 0;
-    d3.geo.stream(object, projectStream(d3_geo_pathCentroid));
+    D3GeoStream(object, projectStream(d3_geo_pathCentroid));
     return d3_geo_centroidZ ? [d3_geo_centroidX / d3_geo_centroidZ, d3_geo_centroidY / d3_geo_centroidZ] : undefined;
   };
 
@@ -40,7 +59,7 @@ d3.geo.path = function() {
 
   path.context = function(_) {
     if (!arguments.length) return context;
-    contextStream = (context = _) == null ? new d3_geo_pathBuffer : new d3_geo_pathContext(_);
+    contextStream = (context = _) == null ? new (require("./path-buffer")._pathBuffer) : new d3_geo_pathContext(_);
     return path;
   };
 
@@ -50,7 +69,7 @@ d3.geo.path = function() {
     return path;
   };
 
-  return path.projection(d3.geo.albersUsa()).context(null);
+  return path.projection(D3GeoAlbersUsa()).context(null);
 };
 
 function d3_geo_pathCircle(radius) {
@@ -61,11 +80,11 @@ function d3_geo_pathCircle(radius) {
 }
 
 function d3_geo_pathProjectStream(project) {
-  var resample = d3_geo_resample(function(λ, φ) { return project([λ * d3_degrees, φ * d3_degrees]); });
+  var resample = d3_geo_resample(function(_u03bb, _u03c6) { return project([_u03bb * d3_degrees, _u03c6 * d3_degrees]); });
   return function(stream) {
     stream = resample(stream);
     return {
-      point: function(λ, φ) { stream.point(λ * d3_radians, φ * d3_radians); },
+      point: function(_u03bb, _u03c6) { stream.point(_u03bb * d3_radians, _u03c6 * d3_radians); },
       sphere: function() { stream.sphere(); },
       lineStart: function() { stream.lineStart(); },
       lineEnd: function() { stream.lineEnd(); },
@@ -74,3 +93,7 @@ function d3_geo_pathProjectStream(project) {
     };
   };
 }
+
+D3GeoPath._pathCircle = d3_geo_pathCircle;
+
+module.exports = D3GeoPath;

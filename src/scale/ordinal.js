@@ -1,4 +1,8 @@
-d3.scale.ordinal = function() {
+var d3_Map = require("../core/map")._Map,
+    d3_scaleExtent = require("./scale")._scaleExtent,
+    D3Range = require("../core/range");
+
+var D3ScaleOrdinal = function() {
   return d3_scale_ordinal([], {t: "range", a: [[]]});
 };
 
@@ -12,7 +16,7 @@ function d3_scale_ordinal(domain, ranger) {
   }
 
   function steps(start, step) {
-    return d3.range(domain.length).map(function(i) { return start + step * i; });
+    return D3Range(domain.length).map(function(i) { return start + step * i; });
   }
 
   scale.domain = function(x) {
@@ -86,3 +90,5 @@ function d3_scale_ordinal(domain, ranger) {
 
   return scale.domain(domain);
 }
+
+module.exports = D3ScaleOrdinal;

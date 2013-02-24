@@ -1,4 +1,12 @@
-d3.format = function(specifier) {
+var D3CoreFormatEnUS = require("./format-en_US"),
+    d3_format_decimalPoint = D3CoreFormatEnUS._decimalPoint,
+    d3_identity = require("./identity")._identity,
+    d3_format_grouping = D3CoreFormatEnUS._grouping,
+    d3_format_thousandsSeparator = D3CoreFormatEnUS._thousandsSeparator,
+    D3Map = require("./map"),
+    D3Round = require("./round");
+
+var D3Format = function(specifier) {
   var match = d3_format_re.exec(specifier),
       fill = match[1] || " ",
       align = match[2] || ">",
@@ -53,7 +61,7 @@ d3.format = function(specifier) {
 
     // Apply the scale, computing it from the value's exponent for si format.
     if (scale < 0) {
-      var prefix = d3.formatPrefix(value, precision);
+      var prefix = require("./formatPrefix")(value, precision);
       value = prefix.scale(value);
       suffix = prefix.symbol;
     } else {
@@ -86,7 +94,7 @@ d3.format = function(specifier) {
 // [[fill]align][sign][#][0][width][,][.precision][type]
 var d3_format_re = /(?:([^{])?([<>=^]))?([+\- ])?(#)?(0)?([0-9]+)?(,)?(\.[0-9]+)?([a-zA-Z%])?/;
 
-var d3_format_types = d3.map({
+var d3_format_types = D3Map({
   b: function(x) { return x.toString(2); },
   c: function(x) { return String.fromCharCode(x); },
   o: function(x) { return x.toString(8); },
@@ -95,7 +103,7 @@ var d3_format_types = d3.map({
   g: function(x, p) { return x.toPrecision(p); },
   e: function(x, p) { return x.toExponential(p); },
   f: function(x, p) { return x.toFixed(p); },
-  r: function(x, p) { return d3.round(x, p = d3_format_precision(x, p)).toFixed(Math.max(0, Math.min(20, p))); }
+  r: function(x, p) { return D3Round(x, p = d3_format_precision(x, p)).toFixed(Math.max(0, Math.min(20, p))); }
 });
 
 function d3_format_precision(x, p) {
@@ -123,3 +131,7 @@ if (d3_format_grouping) {
     return t.reverse().join(d3_format_thousandsSeparator || "") + f;
   };
 }
+
+D3Format._precision = d3_format_precision;
+
+module.exports = D3Format;

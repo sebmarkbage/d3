@@ -1,1 +1,3 @@
-d3.geom = {};
+var D3Geom = {};
+
+module.exports = D3Geom;

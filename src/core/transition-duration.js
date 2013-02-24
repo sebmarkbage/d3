@@ -1,3 +1,6 @@
+var d3_transitionPrototype = require("./transition")._transitionPrototype,
+    d3_selection_each = require("./selection-each")._each;
+
 d3_transitionPrototype.duration = function(value) {
   var id = this.id;
   return d3_selection_each(this, typeof value === "function"

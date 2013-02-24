@@ -1,4 +1,7 @@
-d3.mouse = function(container) {
+var d3_eventSource = require("./event")._eventSource,
+    D3Select = require("./selection-root");
+
+var D3Mouse = function(container) {
   return d3_mousePoint(container, d3_eventSource());
 };
 
@@ -10,7 +13,7 @@ function d3_mousePoint(container, e) {
   if (svg.createSVGPoint) {
     var point = svg.createSVGPoint();
     if (d3_mouse_bug44083 < 0 && (window.scrollX || window.scrollY)) {
-      svg = d3.select(document.body)
+      svg = D3Select(document.body)
         .append("svg")
           .style("position", "absolute")
           .style("top", 0)
@@ -32,3 +35,7 @@ function d3_mousePoint(container, e) {
   var rect = container.getBoundingClientRect();
   return [e.clientX - rect.left - container.clientLeft, e.clientY - rect.top - container.clientTop];
 };
+
+D3Mouse._mousePoint = d3_mousePoint;
+
+module.exports = D3Mouse;

@@ -1,3 +1,7 @@
+var d3_selectionPrototype = require("./selection")._selectionPrototype,
+    d3_collapse = require("./collapse")._collapse,
+    D3Requote = require("./requote");
+
 d3_selectionPrototype.classed = function(name, value) {
   if (arguments.length < 2) {
 
@@ -29,7 +33,7 @@ d3_selectionPrototype.classed = function(name, value) {
 };
 
 function d3_selection_classedRe(name) {
-  return new RegExp("(?:^|\\s+)" + d3.requote(name) + "(?:\\s+|$)", "g");
+  return new RegExp("(?:^|\\s+)" + D3Requote(name) + "(?:\\s+|$)", "g");
 }
 
 // Multiple class names are allowed (e.g., "foo bar").

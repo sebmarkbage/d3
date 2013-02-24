@@ -1,5 +1,8 @@
-d3.layout.partition = function() {
-  var hierarchy = d3.layout.hierarchy(),
+var D3LayoutHierarchy = require("./hierarchy"),
+    d3_layout_hierarchyRebind = D3LayoutHierarchy._hierarchyRebind;
+
+var D3LayoutPartition = function() {
+  var hierarchy = D3LayoutHierarchy(),
       size = [1, 1]; // width, height
 
   function position(node, x, dx, dy) {
@@ -46,3 +49,5 @@ d3.layout.partition = function() {
 
   return d3_layout_hierarchyRebind(partition, hierarchy);
 };
+
+module.exports = D3LayoutPartition;

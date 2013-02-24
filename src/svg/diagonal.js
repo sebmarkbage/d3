@@ -1,4 +1,9 @@
-d3.svg.diagonal = function() {
+var D3 = require("../core/core"),
+    d3_source = D3._source,
+    d3_target = D3._target,
+    d3_functor = require("../core/functor")._functor;
+
+var D3SVGDiagonal = function() {
   var source = d3_source,
       target = d3_target,
       projection = d3_svg_diagonalProjection;
@@ -36,3 +41,7 @@ d3.svg.diagonal = function() {
 function d3_svg_diagonalProjection(d) {
   return [d.x, d.y];
 }
+
+D3SVGDiagonal._diagonalProjection = d3_svg_diagonalProjection;
+
+module.exports = D3SVGDiagonal;

@@ -2,4 +2,8 @@ function d3_functor(v) {
   return typeof v === "function" ? v : function() { return v; };
 }
 
-d3.functor = d3_functor;
+var D3Functor = d3_functor;
+
+D3Functor._functor = d3_functor;
+
+module.exports = D3Functor;

@@ -1,10 +1,13 @@
+var d3_selectionPrototype = require("./selection")._selectionPrototype,
+    D3NS = require("./ns");
+
 d3_selectionPrototype.attr = function(name, value) {
   if (arguments.length < 2) {
 
     // For attr(string), return the attribute value for the first node.
     if (typeof name === "string") {
       var node = this.node();
-      name = d3.ns.qualify(name);
+      name = D3NS.qualify(name);
       return name.local
           ? node.getAttributeNS(name.space, name.local)
           : node.getAttribute(name);
@@ -21,7 +24,7 @@ d3_selectionPrototype.attr = function(name, value) {
 };
 
 function d3_selection_attr(name, value) {
-  name = d3.ns.qualify(name);
+  name = D3NS.qualify(name);
 
   // For attr(string, null), remove the attribute with the specified name.
   function attrNull() {

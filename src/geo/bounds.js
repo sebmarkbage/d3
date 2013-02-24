@@ -1,4 +1,8 @@
-d3.geo.bounds = d3_geo_bounds(d3_identity);
+var d3_identity = require("../core/identity")._identity,
+    d3_noop = require("../core/noop")._noop,
+    D3GeoStream = require("./stream");
+
+var D3GeoBounds = d3_geo_bounds(d3_identity);
 
 function d3_geo_bounds(projectStream) {
   var x0, y0, x1, y1;
@@ -26,7 +30,11 @@ function d3_geo_bounds(projectStream) {
 
   return function(feature) {
     y1 = x1 = -(x0 = y0 = Infinity);
-    d3.geo.stream(feature, projectStream(bound));
+    D3GeoStream(feature, projectStream(bound));
     return [[x0, y0], [x1, y1]];
   };
 }
+
+D3GeoBounds._bounds = d3_geo_bounds;
+
+module.exports = D3GeoBounds;

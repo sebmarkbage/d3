@@ -1,10 +1,12 @@
-var d3_formatPrefixes = ["y","z","a","f","p","n","μ","m","","k","M","G","T","P","E","Z","Y"].map(d3_formatPrefix);
+var D3Round = require("./round");
 
-d3.formatPrefix = function(value, precision) {
+var d3_formatPrefixes = ["y","z","a","f","p","n","_u03bc","m","","k","M","G","T","P","E","Z","Y"].map(d3_formatPrefix);
+
+var D3FormatPrefix = function(value, precision) {
   var i = 0;
   if (value) {
     if (value < 0) value *= -1;
-    if (precision) value = d3.round(value, d3_format_precision(value, precision));
+    if (precision) value = D3Round(value, require("./format")._precision(value, precision));
     i = 1 + Math.floor(1e-12 + Math.log(value) / Math.LN10);
     i = Math.max(-24, Math.min(24, Math.floor((i <= 0 ? i + 1 : i - 1) / 3) * 3));
   }
@@ -18,3 +20,5 @@ function d3_formatPrefix(d, i) {
     symbol: d
   };
 }
+
+module.exports = D3FormatPrefix;

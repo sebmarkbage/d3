@@ -1,13 +1,4 @@
-/**
- * Computes the 2D convex hull of a set of points using Graham's scanning
- * algorithm. The algorithm has been implemented as described in Cormen,
- * Leiserson, and Rivest's Introduction to Algorithms. The running time of
- * this algorithm is O(n log n), where n is the number of input points.
- *
- * @param vertices [[x1, y1], [x2, y2], …]
- * @returns polygon [[x1, y1], [x2, y2], …]
- */
-d3.geom.hull = function(vertices) {
+var D3GeomHull = function(vertices) {
   if (vertices.length < 3) return [];
 
   var len = vertices.length,
@@ -96,3 +87,5 @@ function d3_geom_hullCCW(i1, i2, i3, v) {
   t = v[i3]; e = t[0]; f = t[1];
   return ((f-b)*(c-a) - (d-b)*(e-a)) > 0;
 }
+
+module.exports = D3GeomHull;

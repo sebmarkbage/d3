@@ -1,5 +1,12 @@
-d3.svg.axis = function() {
-  var scale = d3.scale.linear(),
+var D3Scale = require("../scale/scale"),
+    d3_scaleRange = D3Scale._scaleRange,
+    d3_scaleExtent = D3Scale._scaleExtent,
+    D3ScaleLinear = require("../scale/linear"),
+    D3Select = require("../core/selection-root"),
+    D3Transition = require("../core/transition");
+
+var D3SVGAxis = function() {
+  var scale = D3ScaleLinear(),
       orient = "bottom",
       tickMajorSize = 6,
       tickMinorSize = 6,
@@ -12,7 +19,7 @@ d3.svg.axis = function() {
 
   function axis(g) {
     g.each(function() {
-      var g = d3.select(this);
+      var g = D3Select(this);
 
       // Ticks, or domain values for ordinal scales.
       var ticks = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments_) : scale.domain()) : tickValues,
@@ -22,20 +29,20 @@ d3.svg.axis = function() {
       var subticks = d3_svg_axisSubdivide(scale, ticks, tickSubdivide),
           subtick = g.selectAll(".minor").data(subticks, String),
           subtickEnter = subtick.enter().insert("line", "g").attr("class", "tick minor").style("opacity", 1e-6),
-          subtickExit = d3.transition(subtick.exit()).style("opacity", 1e-6).remove(),
-          subtickUpdate = d3.transition(subtick).style("opacity", 1);
+          subtickExit = D3Transition(subtick.exit()).style("opacity", 1e-6).remove(),
+          subtickUpdate = D3Transition(subtick).style("opacity", 1);
 
       // Major ticks.
       var tick = g.selectAll("g").data(ticks, String),
           tickEnter = tick.enter().insert("g", "path").style("opacity", 1e-6),
-          tickExit = d3.transition(tick.exit()).style("opacity", 1e-6).remove(),
-          tickUpdate = d3.transition(tick).style("opacity", 1),
+          tickExit = D3Transition(tick.exit()).style("opacity", 1e-6).remove(),
+          tickUpdate = D3Transition(tick).style("opacity", 1),
           tickTransform;
 
       // Domain.
       var range = d3_scaleRange(scale),
           path = g.selectAll(".domain").data([0]),
-          pathUpdate = d3.transition(path);
+          pathUpdate = D3Transition(path);
 
       // Stash a snapshot of the new scale, and retrieve the old snapshot.
       var scale1 = scale.copy(),
@@ -212,3 +219,5 @@ function d3_svg_axisSubdivide(scale, ticks, m) {
   }
   return subticks;
 }
+
+module.exports = D3SVGAxis;

@@ -10,3 +10,5 @@ function d3_class(ctor, properties) {
     ctor.prototype = properties;
   }
 }
+
+exports._class = d3_class;

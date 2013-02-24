@@ -1,4 +1,8 @@
-d3.scale.identity = function() {
+var D3ScaleLinear = require("./linear"),
+    d3_scale_linearTicks = D3ScaleLinear._linearTicks,
+    d3_scale_linearTickFormat = D3ScaleLinear._linearTickFormat;
+
+var D3ScaleIdentity = function() {
   return d3_scale_identity([0, 1]);
 };
 
@@ -28,3 +32,5 @@ function d3_scale_identity(domain) {
 
   return identity;
 }
+
+module.exports = D3ScaleIdentity;

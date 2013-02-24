@@ -1,17 +1,22 @@
-function d3_geo_mercator(λ, φ) {
+var _u03c0 = require("../core/core")._u03c0,
+    d3_geo_projection = require("./projection")._projection;
+
+function d3_geo_mercator(_u03bb, _u03c6) {
   return [
-    λ / (2 * π),
-    Math.max(-.5, Math.min(+.5, Math.log(Math.tan(π / 4 + φ / 2)) / (2 * π)))
+    _u03bb / (2 * _u03c0),
+    Math.max(-.5, Math.min(+.5, Math.log(Math.tan(_u03c0 / 4 + _u03c6 / 2)) / (2 * _u03c0)))
   ];
 }
 
 d3_geo_mercator.invert = function(x, y) {
   return [
-    2 * π * x,
-    2 * Math.atan(Math.exp(2 * π * y)) - π / 2
+    2 * _u03c0 * x,
+    2 * Math.atan(Math.exp(2 * _u03c0 * y)) - _u03c0 / 2
   ];
 };
 
-(d3.geo.mercator = function() {
+(D3GeoMercator = function() {
   return d3_geo_projection(d3_geo_mercator).scale(500);
 }).raw = d3_geo_mercator;
+
+module.exports = D3GeoMercator;

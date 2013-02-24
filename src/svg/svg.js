@@ -1,1 +1,3 @@
-d3.svg = {};
+var D3SVG = {};
+
+module.exports = D3SVG;

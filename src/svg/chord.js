@@ -1,4 +1,14 @@
-d3.svg.chord = function() {
+var D3 = require("../core/core"),
+    D3SVGArc = require("./arc"),
+    d3_source = D3._source,
+    d3_target = D3._target,
+    d3_svg_arcStartAngle = D3SVGArc._arcStartAngle,
+    d3_svg_arcEndAngle = D3SVGArc._arcEndAngle,
+    d3_svg_arcOffset = D3SVGArc._arcOffset,
+    _u03c0 = D3._u03c0,
+    d3_functor = require("../core/functor")._functor;
+
+var D3SVGChord = function() {
   var source = d3_source,
       target = d3_target,
       radius = d3_svg_chordRadius,
@@ -38,7 +48,7 @@ d3.svg.chord = function() {
   }
 
   function arc(r, p, a) {
-    return "A" + r + "," + r + " 0 " + +(a > π) + ",1 " + p;
+    return "A" + r + "," + r + " 0 " + +(a > _u03c0) + ",1 " + p;
   }
 
   function curve(r0, p0, r1, p1) {
@@ -81,3 +91,5 @@ d3.svg.chord = function() {
 function d3_svg_chordRadius(d) {
   return d.radius;
 }
+
+module.exports = D3SVGChord;

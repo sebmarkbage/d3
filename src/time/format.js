@@ -1,4 +1,19 @@
-d3.time.format = function(template) {
+var D3Time = require("./time"),
+    D3Map = require("../core/map"),
+    D3TimeFormatEnUS = require("./format-en_US"),
+    d3_time = D3Time._time,
+    d3_Map = D3Map._Map,
+    d3_time_days = D3TimeFormatEnUS._days,
+    d3_time_dayAbbreviations = D3TimeFormatEnUS._dayAbbreviations,
+    d3_time_months = D3TimeFormatEnUS._months,
+    d3_time_monthAbbreviations = D3TimeFormatEnUS._monthAbbreviations,
+    d3_time_formatDateTime = D3TimeFormatEnUS._formatDateTime,
+    d3_time_formatDate = D3TimeFormatEnUS._formatDate,
+    d3_time_formatTime = D3TimeFormatEnUS._formatTime,
+    D3Requote = require("../core/requote"),
+    D3TimeDay = require("./day");
+
+var D3TimeFormat = function(template) {
   var n = template.length;
 
   function format(date) {
@@ -62,7 +77,7 @@ function d3_time_parse(date, template, string, j) {
 }
 
 function d3_time_formatRe(names) {
-  return new RegExp("^(?:" + names.map(d3.requote).join("|") + ")", "i");
+  return new RegExp("^(?:" + names.map(D3Requote).join("|") + ")", "i");
 }
 
 function d3_time_formatLookup(names) {
@@ -95,22 +110,22 @@ var d3_time_formats = {
   A: function(d) { return d3_time_days[d.getDay()]; },
   b: function(d) { return d3_time_monthAbbreviations[d.getMonth()]; },
   B: function(d) { return d3_time_months[d.getMonth()]; },
-  c: d3.time.format(d3_time_formatDateTime),
+  c: D3TimeFormat(d3_time_formatDateTime),
   d: function(d, p) { return d3_time_formatPad(d.getDate(), p, 2); },
   e: function(d, p) { return d3_time_formatPad(d.getDate(), p, 2); },
   H: function(d, p) { return d3_time_formatPad(d.getHours(), p, 2); },
   I: function(d, p) { return d3_time_formatPad(d.getHours() % 12 || 12, p, 2); },
-  j: function(d, p) { return d3_time_formatPad(1 + d3.time.dayOfYear(d), p, 3); },
+  j: function(d, p) { return d3_time_formatPad(1 + D3TimeDay.ofYear(d), p, 3); },
   L: function(d, p) { return d3_time_formatPad(d.getMilliseconds(), p, 3); },
   m: function(d, p) { return d3_time_formatPad(d.getMonth() + 1, p, 2); },
   M: function(d, p) { return d3_time_formatPad(d.getMinutes(), p, 2); },
   p: function(d) { return d.getHours() >= 12 ? "PM" : "AM"; },
   S: function(d, p) { return d3_time_formatPad(d.getSeconds(), p, 2); },
-  U: function(d, p) { return d3_time_formatPad(d3.time.sundayOfYear(d), p, 2); },
+  U: function(d, p) { return d3_time_formatPad(D3Time.sundayOfYear(d), p, 2); },
   w: function(d) { return d.getDay(); },
-  W: function(d, p) { return d3_time_formatPad(d3.time.mondayOfYear(d), p, 2); },
-  x: d3.time.format(d3_time_formatDate),
-  X: d3.time.format(d3_time_formatTime),
+  W: function(d, p) { return d3_time_formatPad(D3Time.mondayOfYear(d), p, 2); },
+  x: D3TimeFormat(d3_time_formatDate),
+  X: D3TimeFormat(d3_time_formatTime),
   y: function(d, p) { return d3_time_formatPad(d.getFullYear() % 100, p, 2); },
   Y: function(d, p) { return d3_time_formatPad(d.getFullYear() % 10000, p, 4); },
   Z: d3_time_zone,
@@ -244,7 +259,7 @@ function d3_time_parseAmPm(date, string, i) {
   return n == null ? -1 : (date.p = n, i);
 }
 
-var d3_time_amPmLookup = d3.map({
+var d3_time_amPmLookup = D3Map({
   am: 0,
   pm: 1
 });
@@ -257,3 +272,5 @@ function d3_time_zone(d) {
       zm = Math.abs(z) % 60;
   return zs + d3_time_formatPad(zh, "0", 2) + d3_time_formatPad(zm, "0", 2);
 }
+
+module.exports = D3TimeFormat;

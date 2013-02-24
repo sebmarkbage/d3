@@ -1,3 +1,6 @@
+var d3_noop = require("../core/noop")._noop,
+    _u03c0 = require("../core/core")._u03c0;
+
 function d3_geo_pathContext(context) {
   var pointRadius = 4.5;
 
@@ -22,7 +25,7 @@ function d3_geo_pathContext(context) {
 
   function point(x, y) {
     context.moveTo(x, y);
-    context.arc(x, y, pointRadius, 0, 2 * π);
+    context.arc(x, y, pointRadius, 0, 2 * _u03c0);
   }
 
   function pointLineStart(x, y) {
@@ -44,3 +47,5 @@ function d3_geo_pathContext(context) {
 
   return stream;
 }
+
+exports._pathContext = d3_geo_pathContext;

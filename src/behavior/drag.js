@@ -1,4 +1,13 @@
-d3.behavior.drag = function() {
+var D3CoreEvent = require("../core/event"),
+    d3_eventDispatch = D3CoreEvent._eventDispatch,
+    d3_eventCancel = D3CoreEvent._eventCancel,
+    D3 = require("../core/core"),
+    D3Select = require("../core/selection-root"),
+    D3Touches = require("../core/touches"),
+    D3Mouse = require("../core/mouse"),
+    D3Rebind = require("../core/rebind");
+
+var D3BehaviorDrag = function() {
   var event = d3_eventDispatch(drag, "drag", "dragstart", "dragend"),
       origin = null;
 
@@ -10,13 +19,13 @@ d3.behavior.drag = function() {
   function mousedown() {
     var target = this,
         event_ = event.of(target, arguments),
-        eventTarget = d3.event.target,
-        touchId = d3.event.touches ? d3.event.changedTouches[0].identifier : null,
+        eventTarget = D3.event.target,
+        touchId = D3.event.touches ? D3.event.changedTouches[0].identifier : null,
         offset,
         origin_ = point(),
         moved = 0;
 
-    var w = d3.select(window)
+    var w = D3Select(window)
         .on(touchId != null ? "touchmove.drag-" + touchId : "mousemove.drag", dragmove)
         .on(touchId != null ? "touchend.drag-" + touchId : "mouseup.drag", dragend, true);
 
@@ -34,8 +43,8 @@ d3.behavior.drag = function() {
     function point() {
       var p = target.parentNode;
       return touchId != null
-          ? d3.touches(p).filter(function(p) { return p.identifier === touchId; })[0]
-          : d3.mouse(p);
+          ? D3Touches(p).filter(function(p) { return p.identifier === touchId; })[0]
+          : D3Mouse(p);
     }
 
     function dragmove() {
@@ -58,7 +67,7 @@ d3.behavior.drag = function() {
       // if moved, prevent the mouseup (and possibly click) from propagating
       if (moved) {
         d3_eventCancel();
-        if (d3.event.target === eventTarget) w.on("click.drag", click, true);
+        if (D3.event.target === eventTarget) w.on("click.drag", click, true);
       }
 
       w .on(touchId != null ? "touchmove.drag-" + touchId : "mousemove.drag", null)
@@ -78,5 +87,7 @@ d3.behavior.drag = function() {
     return drag;
   };
 
-  return d3.rebind(drag, event, "on");
+  return D3Rebind(drag, event, "on");
 };
+
+module.exports = D3BehaviorDrag;

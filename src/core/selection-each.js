@@ -1,3 +1,5 @@
+var d3_selectionPrototype = require("./selection")._selectionPrototype;
+
 d3_selectionPrototype.each = function(callback) {
   return d3_selection_each(this, function(node, i, j) {
     callback.call(node, node.__data__, i, j);
@@ -12,3 +14,5 @@ function d3_selection_each(groups, callback) {
   }
   return groups;
 }
+
+exports._each = d3_selection_each;

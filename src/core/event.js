@@ -1,12 +1,17 @@
-d3.event = null;
+var D3Dispatch = require("./dispatch"),
+    d3_dispatch = D3Dispatch._dispatch,
+    d3_dispatch_event = D3Dispatch._event,
+    D3 = require("./core");
+
+D3.event = null;
 
 function d3_eventCancel() {
-  d3.event.stopPropagation();
-  d3.event.preventDefault();
+  D3.event.stopPropagation();
+  D3.event.preventDefault();
 }
 
 function d3_eventSource() {
-  var e = d3.event, s;
+  var e = D3.event, s;
   while (s = e.sourceEvent) e = s;
   return e;
 }
@@ -35,15 +40,19 @@ function d3_eventDispatch(target) {
     return function(e1) {
       try {
         var e0 =
-        e1.sourceEvent = d3.event;
+        e1.sourceEvent = D3.event;
         e1.target = target;
-        d3.event = e1;
+        D3.event = e1;
         dispatch[e1.type].apply(thiz, argumentz);
       } finally {
-        d3.event = e0;
+        D3.event = e0;
       }
     };
   };
 
   return dispatch;
 }
+
+exports._eventCancel = d3_eventCancel;
+exports._eventSource = d3_eventSource;
+exports._eventDispatch = d3_eventDispatch;

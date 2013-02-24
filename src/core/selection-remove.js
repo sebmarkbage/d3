@@ -1,3 +1,5 @@
+var d3_selectionPrototype = require("./selection")._selectionPrototype;
+
 // TODO remove(selector)?
 // TODO remove(node)?
 // TODO remove(function)?

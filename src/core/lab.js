@@ -1,8 +1,12 @@
-d3.lab = function(l, a, b) {
+var d3_Color = require("./color")._Color,
+    d3_xyz_rgb = require("./xyz")._rgb,
+    _u03c0 = require("./core")._u03c0;
+
+var D3LAB = function(l, a, b) {
   return arguments.length === 1
       ? (l instanceof d3_Lab ? d3_lab(l.l, l.a, l.b)
-      : (l instanceof d3_Hcl ? d3_hcl_lab(l.l, l.c, l.h)
-      : d3_rgb_lab((l = d3.rgb(l)).r, l.g, l.b)))
+      : (l instanceof require("./hcl")._Hcl ? require("./hcl")._lab(l.l, l.c, l.h)
+      : require("./rgb")._lab((l = require("./rgb")(l)).r, l.g, l.b)))
       : d3_lab(+l, +a, +b);
 };
 
@@ -45,7 +49,7 @@ function d3_lab_rgb(l, a, b) {
   x = d3_lab_xyz(x) * d3_lab_X;
   y = d3_lab_xyz(y) * d3_lab_Y;
   z = d3_lab_xyz(z) * d3_lab_Z;
-  return d3_rgb(
+  return require("./rgb")._rgb(
     d3_xyz_rgb( 3.2404542 * x - 1.5371385 * y - 0.4985314 * z),
     d3_xyz_rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z),
     d3_xyz_rgb( 0.0556434 * x - 0.2040259 * y + 1.0572252 * z)
@@ -53,9 +57,20 @@ function d3_lab_rgb(l, a, b) {
 }
 
 function d3_lab_hcl(l, a, b) {
-  return d3_hcl(Math.atan2(b, a) / π * 180, Math.sqrt(a * a + b * b), l);
+  return require("./hcl")._hcl(Math.atan2(b, a) / _u03c0 * 180, Math.sqrt(a * a + b * b), l);
 }
 
 function d3_lab_xyz(x) {
   return x > 0.206893034 ? x * x * x : (x - 4 / 29) / 7.787037;
 }
+
+D3LAB._K = d3_lab_K;
+D3LAB._X = d3_lab_X;
+D3LAB._Y = d3_lab_Y;
+D3LAB._Z = d3_lab_Z;
+D3LAB._Lab = d3_Lab;
+D3LAB._lab = d3_lab;
+D3LAB._rgb = d3_lab_rgb;
+D3LAB._hcl = d3_lab_hcl;
+
+module.exports = D3LAB;

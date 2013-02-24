@@ -1,4 +1,4 @@
-d3.range = function(start, stop, step) {
+var D3Range = function(start, stop, step) {
   if (arguments.length < 3) {
     step = 1;
     if (arguments.length < 2) {
@@ -22,3 +22,5 @@ function d3_range_integerScale(x) {
   while (x * k % 1) k *= 10;
   return k;
 }
+
+module.exports = D3Range;

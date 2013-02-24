@@ -1,5 +1,5 @@
 function d3_geo_pathBuffer() {
-  var pointCircle = d3_geo_pathCircle(4.5),
+  var pointCircle = require("./path")._pathCircle(4.5),
       buffer = [];
 
   var stream = {
@@ -14,7 +14,7 @@ function d3_geo_pathBuffer() {
     polygonEnd: function() { stream.lineEnd = lineEnd; stream.point = point; },
 
     pointRadius: function(_) {
-      pointCircle = d3_geo_pathCircle(_);
+      pointCircle = require("./path")._pathCircle(_);
       return stream;
     },
 
@@ -50,3 +50,5 @@ function d3_geo_pathBuffer() {
 
   return stream;
 }
+
+exports._pathBuffer = d3_geo_pathBuffer;

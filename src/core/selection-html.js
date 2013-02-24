@@ -1,3 +1,5 @@
+var d3_selectionPrototype = require("./selection")._selectionPrototype;
+
 d3_selectionPrototype.html = function(value) {
   return arguments.length
       ? this.each(typeof value === "function"

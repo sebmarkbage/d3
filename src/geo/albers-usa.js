@@ -1,22 +1,24 @@
+var D3GeoAlbers = require("./albers");
+
 // TODO composite invert
 
 // A composite projection for the United States, 960x500. The set of standard
 // parallels for each region comes from USGS, which is published here:
 // http://egsc.usgs.gov/isb/pubs/MapProjections/projections.html#albers
-d3.geo.albersUsa = function() {
-  var lower48 = d3.geo.albers();
+var D3GeoAlbersUsa = function() {
+  var lower48 = D3GeoAlbers();
 
-  var alaska = d3.geo.albers()
+  var alaska = D3GeoAlbers()
       .rotate([160, 0])
       .center([0, 60])
       .parallels([55, 65]);
 
-  var hawaii = d3.geo.albers()
+  var hawaii = D3GeoAlbers()
       .rotate([160, 0])
       .center([0, 20])
       .parallels([8, 18]);
 
-  var puertoRico = d3.geo.albers()
+  var puertoRico = D3GeoAlbers()
       .rotate([60, 0])
       .center([0, 10])
       .parallels([8, 18]);
@@ -57,3 +59,5 @@ d3.geo.albersUsa = function() {
 
   return albersUsa.scale(lower48.scale());
 };
+
+module.exports = D3GeoAlbersUsa;

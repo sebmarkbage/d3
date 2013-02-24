@@ -1,4 +1,4 @@
-d3.max = function(array, f) {
+var D3Max = function(array, f) {
   var i = -1,
       n = array.length,
       a,
@@ -12,3 +12,5 @@ d3.max = function(array, f) {
   }
   return a;
 };
+
+module.exports = D3Max;

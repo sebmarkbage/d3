@@ -1,4 +1,7 @@
-d3.svg.arc = function() {
+var _u03c0 = require("../core/core")._u03c0,
+    d3_functor = require("../core/functor")._functor;
+
+var D3SVGArc = function() {
   var innerRadius = d3_svg_arcInnerRadius,
       outerRadius = d3_svg_arcOuterRadius,
       startAngle = d3_svg_arcStartAngle,
@@ -10,7 +13,7 @@ d3.svg.arc = function() {
         a0 = startAngle.apply(this, arguments) + d3_svg_arcOffset,
         a1 = endAngle.apply(this, arguments) + d3_svg_arcOffset,
         da = (a1 < a0 && (da = a0, a0 = a1, a1 = da), a1 - a0),
-        df = da < π ? "0" : "1",
+        df = da < _u03c0 ? "0" : "1",
         c0 = Math.cos(a0),
         s0 = Math.sin(a0),
         c1 = Math.cos(a1),
@@ -75,8 +78,8 @@ d3.svg.arc = function() {
   return arc;
 };
 
-var d3_svg_arcOffset = -π / 2,
-    d3_svg_arcMax = 2 * π - 1e-6;
+var d3_svg_arcOffset = -_u03c0 / 2,
+    d3_svg_arcMax = 2 * _u03c0 - 1e-6;
 
 function d3_svg_arcInnerRadius(d) {
   return d.innerRadius;
@@ -93,3 +96,9 @@ function d3_svg_arcStartAngle(d) {
 function d3_svg_arcEndAngle(d) {
   return d.endAngle;
 }
+
+D3SVGArc._arcOffset = d3_svg_arcOffset;
+D3SVGArc._arcStartAngle = d3_svg_arcStartAngle;
+D3SVGArc._arcEndAngle = d3_svg_arcEndAngle;
+
+module.exports = D3SVGArc;

@@ -1,3 +1,7 @@
+var D3Time = require("./time"),
+    d3_time = D3Time._time,
+    d3_time_utc = D3Time._utc;
+
 function d3_time_interval(local, step, number) {
 
   function round(date) {
@@ -67,3 +71,5 @@ function d3_time_interval_utc(method) {
     }
   };
 }
+
+exports._interval = d3_time_interval;

@@ -1,3 +1,8 @@
-d3.transpose = function(matrix) {
-  return d3.zip.apply(d3, matrix);
+var D3Zip = require("./zip"),
+    D3 = require("./core");
+
+var D3Transpose = function(matrix) {
+  return D3Zip.apply(D3, matrix);
 };
+
+module.exports = D3Transpose;

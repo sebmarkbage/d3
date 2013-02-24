@@ -1,7 +1,13 @@
-function d3_geo_equirectangular(λ, φ) {
-  return [λ, φ];
+var _u03c0 = require("../core/core")._u03c0;
+
+function d3_geo_equirectangular(_u03bb, _u03c6) {
+  return [_u03bb, _u03c6];
 }
 
-(d3.geo.equirectangular = function() {
-  return d3_geo_projection(d3_geo_equirectangular).scale(250 / π);
+(D3GeoEquirectangular = function() {
+  return require("./projection")._projection(d3_geo_equirectangular).scale(250 / _u03c0);
 }).raw = d3_geo_equirectangular.invert = d3_geo_equirectangular;
+
+D3GeoEquirectangular._equirectangular = d3_geo_equirectangular;
+
+module.exports = D3GeoEquirectangular;

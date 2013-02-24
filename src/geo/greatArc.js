@@ -1,4 +1,10 @@
-d3.geo.greatArc = function() {
+var D3 = require("../core/core"),
+    d3_source = D3._source,
+    d3_target = D3._target,
+    d3_radians = D3._radians,
+    D3GeoInterpolate = require("./interpolate");
+
+var D3GeoGreatArc = function() {
   var source = d3_source, source_,
       target = d3_target, target_,
       precision = 6 * d3_radians,
@@ -7,7 +13,7 @@ d3.geo.greatArc = function() {
   function greatArc() {
     var p0 = source_ || source.apply(this, arguments),
         p1 = target_ || target.apply(this, arguments),
-        i = interpolate || d3.geo.interpolate(p0, p1),
+        i = interpolate || D3GeoInterpolate(p0, p1),
         t = 0,
         dt = precision / i.distance,
         coordinates = [p0];
@@ -18,20 +24,20 @@ d3.geo.greatArc = function() {
 
   // Length returned in radians; multiply by radius for distance.
   greatArc.distance = function() {
-    return (interpolate || d3.geo.interpolate(source_ || source.apply(this, arguments), target_ || target.apply(this, arguments))).distance;
+    return (interpolate || D3GeoInterpolate(source_ || source.apply(this, arguments), target_ || target.apply(this, arguments))).distance;
   };
 
   greatArc.source = function(_) {
     if (!arguments.length) return source;
     source = _, source_ = typeof _ === "function" ? null : _;
-    interpolate = source_ && target_ ? d3.geo.interpolate(source_, target_) : null;
+    interpolate = source_ && target_ ? D3GeoInterpolate(source_, target_) : null;
     return greatArc;
   };
 
   greatArc.target = function(_) {
     if (!arguments.length) return target;
     target = _, target_ = typeof _ === "function" ? null : _;
-    interpolate = source_ && target_ ? d3.geo.interpolate(source_, target_) : null;
+    interpolate = source_ && target_ ? D3GeoInterpolate(source_, target_) : null;
     return greatArc;
   };
 
@@ -44,3 +50,5 @@ d3.geo.greatArc = function() {
 
   return greatArc;
 };
+
+module.exports = D3GeoGreatArc;

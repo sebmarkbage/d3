@@ -1,4 +1,8 @@
-d3.scale.quantile = function() {
+var D3Quantile = require("../core/quantile"),
+    D3Bisect = require("../core/bisect"),
+    D3Ascending = require("../core/ascending");
+
+var D3ScaleQuantile = function() {
   return d3_scale_quantile([], []);
 };
 
@@ -9,18 +13,18 @@ function d3_scale_quantile(domain, range) {
     var k = 0,
         q = range.length;
     thresholds = [];
-    while (++k < q) thresholds[k - 1] = d3.quantile(domain, k / q);
+    while (++k < q) thresholds[k - 1] = D3Quantile(domain, k / q);
     return scale;
   }
 
   function scale(x) {
     if (isNaN(x = +x)) return NaN;
-    return range[d3.bisect(thresholds, x)];
+    return range[D3Bisect(thresholds, x)];
   }
 
   scale.domain = function(x) {
     if (!arguments.length) return domain;
-    domain = x.filter(function(d) { return !isNaN(d); }).sort(d3.ascending);
+    domain = x.filter(function(d) { return !isNaN(d); }).sort(D3Ascending);
     return rescale();
   };
 
@@ -40,3 +44,5 @@ function d3_scale_quantile(domain, range) {
 
   return rescale();
 }
+
+module.exports = D3ScaleQuantile;

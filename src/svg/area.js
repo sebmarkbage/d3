@@ -1,3 +1,14 @@
+var D3SVGLine = require("./line"),
+    d3_svg_lineX = D3SVGLine._lineX,
+    d3_svg_lineY = D3SVGLine._lineY,
+    d3_true = require("../core/true")._true,
+    d3_svg_lineLinear = D3SVGLine._lineLinear,
+    d3_functor = require("../core/functor")._functor,
+    d3_svg_lineInterpolators = D3SVGLine._lineInterpolators,
+    d3_svg_lineStepBefore = D3SVGLine._lineStepBefore,
+    d3_svg_lineStepAfter = D3SVGLine._lineStepAfter,
+    d3_identity = require("../core/identity")._identity;
+
 function d3_svg_area(projection) {
   var x0 = d3_svg_lineX,
       x1 = d3_svg_lineX,
@@ -109,6 +120,10 @@ function d3_svg_area(projection) {
 d3_svg_lineStepBefore.reverse = d3_svg_lineStepAfter;
 d3_svg_lineStepAfter.reverse = d3_svg_lineStepBefore;
 
-d3.svg.area = function() {
+var D3SVGArea = function() {
   return d3_svg_area(d3_identity);
 };
+
+D3SVGArea._area = d3_svg_area;
+
+module.exports = D3SVGArea;

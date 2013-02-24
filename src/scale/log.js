@@ -1,5 +1,13 @@
-d3.scale.log = function() {
-  return d3_scale_log(d3.scale.linear(), d3_scale_logp);
+var D3ScaleNice = require("./nice"),
+    D3ScaleLinear = require("./linear"),
+    d3_scale_nice = D3ScaleNice._nice,
+    d3_scale_niceDefault = D3ScaleNice._niceDefault,
+    d3_scaleExtent = require("./scale")._scaleExtent,
+    d3_scale_linearRebind = D3ScaleLinear._linearRebind,
+    D3Format = require("../core/format");
+
+var D3ScaleLog = function() {
+  return d3_scale_log(D3ScaleLinear(), d3_scale_logp);
 };
 
 function d3_scale_log(linear, log) {
@@ -66,7 +74,7 @@ function d3_scale_log(linear, log) {
   return d3_scale_linearRebind(scale, linear);
 }
 
-var d3_scale_logFormat = d3.format(".0e");
+var d3_scale_logFormat = D3Format(".0e");
 
 function d3_scale_logp(x) {
   return Math.log(x < 0 ? 0 : x) / Math.LN10;
@@ -83,3 +91,5 @@ d3_scale_logp.pow = function(x) {
 d3_scale_logn.pow = function(x) {
   return -Math.pow(10, -x);
 };
+
+module.exports = D3ScaleLog;

@@ -1,3 +1,6 @@
+var _u03b5 = require("../core/core")._u03b5,
+    D3Range = require("../core/range");
+
 // Adapted from Nicolas Garcia Belmonte's JIT implementation:
 // http://blog.thejit.org/2010/02/12/voronoi-tessellation/
 // http://blog.thejit.org/assets/voronoijs/voronoi.js
@@ -15,10 +18,10 @@
 // computing the tessellation.
 
 /**
- * @param vertices [[x1, y1], [x2, y2], …]
- * @returns polygons [[[x1, y1], [x2, y2], …], …]
+ * @param vertices [[x1, y1], [x2, y2], _u2026]
+ * @returns polygons [[[x1, y1], [x2, y2], _u2026], _u2026]
  */
-d3.geom.voronoi = function(vertices) {
+var D3GeomVoronoi = function(vertices) {
   var polygons = vertices.map(function() { return []; }),
       Z = 1e6;
 
@@ -58,9 +61,9 @@ d3.geom.voronoi = function(vertices) {
     var cx = vertices[i][0],
         cy = vertices[i][1],
         angle = polygon.map(function(v) { return Math.atan2(v[0] - cx, v[1] - cy); });
-    return d3.range(polygon.length)
+    return D3Range(polygon.length)
         .sort(function(a, b) { return angle[a] - angle[b]; })
-        .filter(function(d, i, order) { return !i || (angle[d] - angle[order[i - 1]] > ε); })
+        .filter(function(d, i, order) { return !i || (angle[d] - angle[order[i - 1]] > _u03b5); })
         .map(function(d) { return polygon[d]; });
   });
 
@@ -78,16 +81,16 @@ d3.geom.voronoi = function(vertices) {
         x2 = p2[0], y2 = p2[1],
         dx = Math.abs(x2 - x1), dy = y2 - y1;
 
-    if (Math.abs(dy) < ε) { // 0°
+    if (Math.abs(dy) < _u03b5) { // 0_u00b0
       var y = y0 < y1 ? -Z : Z;
       polygon.push([-Z, y], [Z, y]);
-    } else if (dx < ε) { // ±90°
+    } else if (dx < _u03b5) { // _u00b190_u00b0
       var x = x0 < x1 ? -Z : Z;
       polygon.push([x, -Z], [x, Z]);
     } else {
       var y = (x2 - x1) * (y1 - y0) < (x1 - x0) * (y2 - y1) ? Z : -Z,
           z = Math.abs(dy) - dx;
-      if (Math.abs(z) < ε) { // ±45°
+      if (Math.abs(z) < _u03b5) { // _u00b145_u00b0
         polygon.push([dy < 0 ? y : -y, y]);
       } else {
         if (z > 0) y *= -1;
@@ -439,3 +442,7 @@ function d3_voronoi_tessellate(vertices, callback) {
     callback(lbnd.edge);
   }
 }
+
+D3GeomVoronoi._tessellate = d3_voronoi_tessellate;
+
+module.exports = D3GeomVoronoi;

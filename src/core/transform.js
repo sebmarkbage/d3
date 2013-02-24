@@ -1,6 +1,9 @@
-d3.transform = function(string) {
-  var g = document.createElementNS(d3.ns.prefix.svg, "g");
-  return (d3.transform = function(string) {
+var d3_degrees = require("./core")._degrees,
+    D3NS = require("./ns");
+
+var D3Transform = function(string) {
+  var g = document.createElementNS(D3NS.prefix.svg, "g");
+  return (D3Transform = function(string) {
     g.setAttribute("transform", string);
     var t = g.transform.baseVal.consolidate();
     return new d3_transform(t ? t.matrix : d3_transformIdentity);
@@ -57,3 +60,5 @@ function d3_transformCombine(a, b, k) {
 }
 
 var d3_transformIdentity = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
+
+module.exports = D3Transform;

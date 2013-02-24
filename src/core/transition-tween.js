@@ -1,3 +1,6 @@
+var d3_transitionPrototype = require("./transition")._transitionPrototype,
+    d3_selection_each = require("./selection-each")._each;
+
 d3_transitionPrototype.tween = function(name, tween) {
   var id = this.id;
   if (arguments.length < 2) return this.node().__transition__[id].tween.get(name);
@@ -12,3 +15,5 @@ function d3_transition_tween(groups, name, value, tween) {
       ? function(node, i, j) { node.__transition__[id].tween.set(name, tween(value.call(node, node.__data__, i, j))); }
       : (value = tween(value), function(node) { node.__transition__[id].tween.set(name, value); }));
 }
+
+exports._tween = d3_transition_tween;

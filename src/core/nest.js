@@ -1,4 +1,6 @@
-d3.nest = function() {
+var d3_Map = require("./map")._Map;
+
+var D3Nest = function() {
   var nest = {},
       keys = [],
       sortKeys = [],
@@ -87,3 +89,5 @@ d3.nest = function() {
 
   return nest;
 };
+
+module.exports = D3Nest;

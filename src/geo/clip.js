@@ -1,3 +1,9 @@
+var D3 = require("../core/core"),
+    _u03b5 = D3._u03b5,
+    _u03c0 = D3._u03c0,
+    d3_noop = require("../core/noop")._noop,
+    D3Merge = require("../core/merge");
+
 function d3_geo_clip(pointVisible, clipLine, interpolate) {
   return function(listener) {
     var line = clipLine(listener);
@@ -20,10 +26,10 @@ function d3_geo_clip(pointVisible, clipLine, interpolate) {
         clip.lineStart = lineStart;
         clip.lineEnd = lineEnd;
 
-        segments = d3.merge(segments);
+        segments = D3Merge(segments);
         if (segments.length) {
           d3_geo_clipPolygon(segments, interpolate, listener);
-        } else if (visibleArea < -ε || invisible && invisibleArea < -ε) {
+        } else if (visibleArea < -_u03b5 || invisible && invisibleArea < -_u03b5) {
           listener.lineStart();
           interpolate(null, null, 1, listener);
           listener.lineEnd();
@@ -40,8 +46,8 @@ function d3_geo_clip(pointVisible, clipLine, interpolate) {
       }
     };
 
-    function point(λ, φ) { if (pointVisible(λ, φ)) listener.point(λ, φ); }
-    function pointLine(λ, φ) { line.point(λ, φ); }
+    function point(_u03bb, _u03c6) { if (pointVisible(_u03bb, _u03c6)) listener.point(_u03bb, _u03c6); }
+    function pointLine(_u03bb, _u03c6) { line.point(_u03bb, _u03c6); }
     function lineStart() { clip.point = pointLine; line.lineStart(); }
     function lineEnd() { clip.point = point; line.lineEnd(); }
 
@@ -54,9 +60,9 @@ function d3_geo_clip(pointVisible, clipLine, interpolate) {
         ringListener = clipLine(buffer),
         ring;
 
-    function pointRing(λ, φ) {
-      ringListener.point(λ, φ);
-      ring.push([λ, φ]);
+    function pointRing(_u03bb, _u03c6) {
+      ringListener.point(_u03bb, _u03c6);
+      ring.push([_u03bb, _u03c6]);
     }
 
     function ringStart() {
@@ -187,8 +193,8 @@ function d3_geo_clipLinkCircular(array) {
 // Intersection points are sorted along the clip edge. For both antimeridian
 // cutting and circle clipping, the same comparison is used.
 function d3_geo_clipSort(a, b) {
-  return ((a = a.point)[0] < 0 ? a[1] - π / 2 - ε : π / 2 - a[1])
-       - ((b = b.point)[0] < 0 ? b[1] - π / 2 - ε : π / 2 - b[1]);
+  return ((a = a.point)[0] < 0 ? a[1] - _u03c0 / 2 - _u03b5 : _u03c0 / 2 - a[1])
+       - ((b = b.point)[0] < 0 ? b[1] - _u03c0 / 2 - _u03b5 : _u03c0 / 2 - b[1]);
 }
 
 function d3_geo_clipSegmentLength1(segment) {
@@ -200,7 +206,7 @@ function d3_geo_clipBufferListener() {
       line;
   return {
     lineStart: function() { lines.push(line = []); },
-    point: function(λ, φ) { line.push([λ, φ]); },
+    point: function(_u03bb, _u03c6) { line.push([_u03bb, _u03c6]); },
     lineEnd: d3_noop,
     buffer: function() {
       var buffer = lines;
@@ -211,11 +217,11 @@ function d3_geo_clipBufferListener() {
   };
 }
 
-// Approximate polygon ring area (×2, since we only need the sign).
-// For an invisible polygon ring, we rotate longitudinally by 180°.
+// Approximate polygon ring area (_u00d72, since we only need the sign).
+// For an invisible polygon ring, we rotate longitudinally by 180_u00b0.
 // The invisible parameter should be 1, or -1 to rotate longitudinally.
 // Based on Robert. G. Chamberlain and William H. Duquette,
-// “Some Algorithms for Polygons on a Sphere”,
+// _u201cSome Algorithms for Polygons on a Sphere_u201d,
 // http://trs-new.jpl.nasa.gov/dspace/handle/2014/40409
 function d3_geo_clipAreaRing(ring, invisible) {
   if (!(n = ring.length)) return 0;
@@ -223,43 +229,45 @@ function d3_geo_clipAreaRing(ring, invisible) {
       i = 0,
       area = 0,
       p = ring[0],
-      λ = p[0],
-      φ = p[1],
-      cosφ = Math.cos(φ),
-      x0 = Math.atan2(invisible * Math.sin(λ) * cosφ, Math.sin(φ)),
-      y0 = 1 - invisible * Math.cos(λ) * cosφ,
+      _u03bb = p[0],
+      _u03c6 = p[1],
+      cos_u03c6 = Math.cos(_u03c6),
+      x0 = Math.atan2(invisible * Math.sin(_u03bb) * cos_u03c6, Math.sin(_u03c6)),
+      y0 = 1 - invisible * Math.cos(_u03bb) * cos_u03c6,
       x1 = x0,
-      x, // λ'; λ rotated to south pole.
-      y; // φ' = 1 + sin(φ); φ rotated to south pole.
+      x, // _u03bb'; _u03bb rotated to south pole.
+      y; // _u03c6' = 1 + sin(_u03c6); _u03c6 rotated to south pole.
   while (++i < n) {
     p = ring[i];
-    cosφ = Math.cos(φ = p[1]);
-    x = Math.atan2(invisible * Math.sin(λ = p[0]) * cosφ, Math.sin(φ));
-    y = 1 - invisible * Math.cos(λ) * cosφ;
+    cos_u03c6 = Math.cos(_u03c6 = p[1]);
+    x = Math.atan2(invisible * Math.sin(_u03bb = p[0]) * cos_u03c6, Math.sin(_u03c6));
+    y = 1 - invisible * Math.cos(_u03bb) * cos_u03c6;
 
     // If both the current point and the previous point are at the north pole,
     // skip this point.
-    if (Math.abs(y0 - 2) < ε && Math.abs(y - 2) < ε) continue;
+    if (Math.abs(y0 - 2) < _u03b5 && Math.abs(y - 2) < _u03b5) continue;
 
     // If this or the previous point is at the south pole, or if this segment
     // goes through the south pole, the area is 0.
-    if (Math.abs(y) < ε || Math.abs(y0) < ε) {}
+    if (Math.abs(y) < _u03b5 || Math.abs(y0) < _u03b5) {}
 
-    // If this segment goes through either pole…
-    else if (Math.abs(Math.abs(x - x0) - π) < ε) {
+    // If this segment goes through either pole_u2026
+    else if (Math.abs(Math.abs(x - x0) - _u03c0) < _u03b5) {
       // For the north pole, compute lune area.
       if (y + y0 > 2) area += 4 * (x - x0);
       // For the south pole, the area is zero.
     }
 
     // If the previous point is at the north pole, then compute lune area.
-    else if (Math.abs(y0 - 2) < ε) area += 4 * (x - x1);
+    else if (Math.abs(y0 - 2) < _u03b5) area += 4 * (x - x1);
 
     // Otherwise, the spherical triangle area is approximately
-    // δλ * (1 + sinφ0 + 1 + sinφ) / 2.
-    else area += ((3 * π + x - x0) % (2 * π) - π) * (y0 + y);
+    // _u03b4_u03bb * (1 + sin_u03c60 + 1 + sin_u03c6) / 2.
+    else area += ((3 * _u03c0 + x - x0) % (2 * _u03c0) - _u03c0) * (y0 + y);
 
     x1 = x0, x0 = x, y0 = y;
   }
   return area;
 }
+
+exports._clip = d3_geo_clip;

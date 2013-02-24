@@ -1,5 +1,10 @@
-d3.time.format.utc = function(template) {
-  var local = d3.time.format(template);
+var D3Time = require("./time"),
+    d3_time = D3Time._time,
+    d3_time_utc = D3Time._utc,
+    D3TimeFormat = require("./format");
+
+var D3TimeFormatUtc = function(template) {
+  var local = D3TimeFormat(template);
 
   function format(date) {
     try {
@@ -26,3 +31,5 @@ d3.time.format.utc = function(template) {
 
   return format;
 };
+
+module.exports = D3TimeFormatUtc;

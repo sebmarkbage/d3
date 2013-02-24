@@ -5,7 +5,7 @@ var d3_timer_id = 0,
     d3_timer_timeout; // is a timeout active?
 
 // The timer will continue to fire until callback returns true.
-d3.timer = function(callback, delay, then) {
+var D3Timer = function(callback, delay, then) {
   if (arguments.length < 3) {
     if (arguments.length < 2) delay = 0;
     else if (!isFinite(delay)) return;
@@ -59,7 +59,7 @@ function d3_timer_step() {
   }
 }
 
-d3.timer.flush = function() {
+D3Timer.flush = function() {
   var elapsed,
       now = Date.now(),
       t1 = d3_timer_queue;
@@ -96,3 +96,5 @@ var d3_timer_frame = window.requestAnimationFrame
     || window.oRequestAnimationFrame
     || window.msRequestAnimationFrame
     || function(callback) { setTimeout(callback, 17); };
+
+module.exports = D3Timer;

@@ -1,1 +1,3 @@
-d3.layout = {};
+var D3Layout = {};
+
+module.exports = D3Layout;

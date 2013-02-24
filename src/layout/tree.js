@@ -1,6 +1,9 @@
+var D3LayoutHierarchy = require("./hierarchy"),
+    d3_layout_hierarchyRebind = D3LayoutHierarchy._hierarchyRebind;
+
 // Node-link tree diagram using the Reingold-Tilford "tidy" algorithm
-d3.layout.tree = function() {
-  var hierarchy = d3.layout.hierarchy().sort(null).value(null),
+var D3LayoutTree = function() {
+  var hierarchy = D3LayoutHierarchy().sort(null).value(null),
       separation = d3_layout_treeSeparation,
       size = [1, 1]; // width, height
 
@@ -235,3 +238,8 @@ function d3_layout_treeAncestor(vim, node, ancestor) {
       ? vim._tree.ancestor
       : ancestor;
 }
+
+D3LayoutTree._treeSeparation = d3_layout_treeSeparation;
+D3LayoutTree._treeVisitAfter = d3_layout_treeVisitAfter;
+
+module.exports = D3LayoutTree;

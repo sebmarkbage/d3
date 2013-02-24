@@ -1,7 +1,11 @@
-d3.rgb = function(r, g, b) {
+var d3_Color = require("./color")._Color,
+    d3_xyz_lab = require("./xyz")._lab,
+    D3Map = require("./map");
+
+var D3RGB = function(r, g, b) {
   return arguments.length === 1
       ? (r instanceof d3_Rgb ? d3_rgb(r.r, r.g, r.b)
-      : d3_rgb_parse("" + r, d3_rgb, d3_hsl_rgb))
+      : d3_rgb_parse("" + r, d3_rgb, require("./hsl")._rgb))
       : d3_rgb(~~r, ~~g, ~~b);
 };
 
@@ -123,17 +127,17 @@ function d3_rgb_hsl(r, g, b) {
   } else {
     s = h = 0;
   }
-  return d3_hsl(h, s, l);
+  return require("./hsl")._hsl(h, s, l);
 }
 
 function d3_rgb_lab(r, g, b) {
   r = d3_rgb_xyz(r);
   g = d3_rgb_xyz(g);
   b = d3_rgb_xyz(b);
-  var x = d3_xyz_lab((0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / d3_lab_X),
-      y = d3_xyz_lab((0.2126729 * r + 0.7151522 * g + 0.0721750 * b) / d3_lab_Y),
-      z = d3_xyz_lab((0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / d3_lab_Z);
-  return d3_lab(116 * y - 16, 500 * (x - y), 200 * (y - z));
+  var x = d3_xyz_lab((0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / require("./lab")._X),
+      y = d3_xyz_lab((0.2126729 * r + 0.7151522 * g + 0.0721750 * b) / require("./lab")._Y),
+      z = d3_xyz_lab((0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / require("./lab")._Z);
+  return require("./lab")._lab(116 * y - 16, 500 * (x - y), 200 * (y - z));
 }
 
 function d3_rgb_xyz(r) {
@@ -145,7 +149,7 @@ function d3_rgb_parseNumber(c) { // either integer or percentage
   return c.charAt(c.length - 1) === "%" ? Math.round(f * 2.55) : f;
 }
 
-var d3_rgb_names = d3.map({
+var d3_rgb_names = D3Map({
   aliceblue: "#f0f8ff",
   antiquewhite: "#faebd7",
   aqua: "#00ffff",
@@ -296,5 +300,14 @@ var d3_rgb_names = d3.map({
 });
 
 d3_rgb_names.forEach(function(key, value) {
-  d3_rgb_names.set(key, d3_rgb_parse(value, d3_rgb, d3_hsl_rgb));
+  d3_rgb_names.set(key, d3_rgb_parse(value, d3_rgb, require("./hsl")._rgb));
 });
+
+D3RGB._names = d3_rgb_names;
+D3RGB._rgb = d3_rgb;
+D3RGB._parse = d3_rgb_parse;
+D3RGB._hsl = d3_rgb_hsl;
+D3RGB._hex = d3_rgb_hex;
+D3RGB._lab = d3_rgb_lab;
+
+module.exports = D3RGB;

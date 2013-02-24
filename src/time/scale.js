@@ -1,3 +1,17 @@
+var d3_scale_nice = require("../scale/nice")._nice,
+    d3_true = require("../core/true")._true,
+    D3Bisect = require("../core/bisect"),
+    D3Rebind = require("../core/rebind"),
+    D3TimeSecond = require("./second"),
+    D3TimeMinute = require("./minute"),
+    D3TimeHour = require("./hour"),
+    D3TimeDay = require("./day"),
+    D3TimeWeek = require("./week"),
+    D3TimeMonth = require("./month"),
+    D3TimeYear = require("./year"),
+    D3TimeFormat = require("./format"),
+    D3ScaleLinear = require("../scale/linear");
+
 function d3_time_scale(linear, methods, format) {
 
   function scale(x) {
@@ -23,7 +37,7 @@ function d3_time_scale(linear, methods, format) {
     if (typeof m !== "function") {
       var span = extent[1] - extent[0],
           target = span / m,
-          i = d3.bisect(d3_time_scaleSteps, target);
+          i = D3Bisect(d3_time_scaleSteps, target);
       if (i == d3_time_scaleSteps.length) return methods.year(extent, m);
       if (!i) return linear.ticks(m).map(d3_time_scaleDate);
       if (Math.log(target / d3_time_scaleSteps[i - 1]) < Math.log(d3_time_scaleSteps[i] / target)) --i;
@@ -43,7 +57,7 @@ function d3_time_scale(linear, methods, format) {
   };
 
   // TOOD expose d3_scale_linear_rebind?
-  return d3.rebind(scale, linear, "range", "rangeRound", "interpolate", "clamp");
+  return D3Rebind(scale, linear, "range", "rangeRound", "interpolate", "clamp");
 }
 
 // TODO expose d3_scaleExtent?
@@ -99,44 +113,51 @@ var d3_time_scaleSteps = [
 ];
 
 var d3_time_scaleLocalMethods = [
-  [d3.time.second, 1],
-  [d3.time.second, 5],
-  [d3.time.second, 15],
-  [d3.time.second, 30],
-  [d3.time.minute, 1],
-  [d3.time.minute, 5],
-  [d3.time.minute, 15],
-  [d3.time.minute, 30],
-  [d3.time.hour, 1],
-  [d3.time.hour, 3],
-  [d3.time.hour, 6],
-  [d3.time.hour, 12],
-  [d3.time.day, 1],
-  [d3.time.day, 2],
-  [d3.time.week, 1],
-  [d3.time.month, 1],
-  [d3.time.month, 3],
-  [d3.time.year, 1]
+  [D3TimeSecond, 1],
+  [D3TimeSecond, 5],
+  [D3TimeSecond, 15],
+  [D3TimeSecond, 30],
+  [D3TimeMinute, 1],
+  [D3TimeMinute, 5],
+  [D3TimeMinute, 15],
+  [D3TimeMinute, 30],
+  [D3TimeHour, 1],
+  [D3TimeHour, 3],
+  [D3TimeHour, 6],
+  [D3TimeHour, 12],
+  [D3TimeDay, 1],
+  [D3TimeDay, 2],
+  [D3TimeWeek, 1],
+  [D3TimeMonth, 1],
+  [D3TimeMonth, 3],
+  [D3TimeYear, 1]
 ];
 
 var d3_time_scaleLocalFormats = [
-  [d3.time.format("%Y"), d3_true],
-  [d3.time.format("%B"), function(d) { return d.getMonth(); }],
-  [d3.time.format("%b %d"), function(d) { return d.getDate() != 1; }],
-  [d3.time.format("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],
-  [d3.time.format("%I %p"), function(d) { return d.getHours(); }],
-  [d3.time.format("%I:%M"), function(d) { return d.getMinutes(); }],
-  [d3.time.format(":%S"), function(d) { return d.getSeconds(); }],
-  [d3.time.format(".%L"), function(d) { return d.getMilliseconds(); }]
+  [D3TimeFormat("%Y"), d3_true],
+  [D3TimeFormat("%B"), function(d) { return d.getMonth(); }],
+  [D3TimeFormat("%b %d"), function(d) { return d.getDate() != 1; }],
+  [D3TimeFormat("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],
+  [D3TimeFormat("%I %p"), function(d) { return d.getHours(); }],
+  [D3TimeFormat("%I:%M"), function(d) { return d.getMinutes(); }],
+  [D3TimeFormat(":%S"), function(d) { return d.getSeconds(); }],
+  [D3TimeFormat(".%L"), function(d) { return d.getMilliseconds(); }]
 ];
 
-var d3_time_scaleLinear = d3.scale.linear(),
+var d3_time_scaleLinear = D3ScaleLinear(),
     d3_time_scaleLocalFormat = d3_time_scaleFormat(d3_time_scaleLocalFormats);
 
 d3_time_scaleLocalMethods.year = function(extent, m) {
   return d3_time_scaleLinear.domain(extent.map(d3_time_scaleGetYear)).ticks(m).map(d3_time_scaleSetYear);
 };
 
-d3.time.scale = function() {
-  return d3_time_scale(d3.scale.linear(), d3_time_scaleLocalMethods, d3_time_scaleLocalFormat);
+var D3TimeScale = function() {
+  return d3_time_scale(D3ScaleLinear(), d3_time_scaleLocalMethods, d3_time_scaleLocalFormat);
 };
+
+D3TimeScale._scaleLocalMethods = d3_time_scaleLocalMethods;
+D3TimeScale._scaleLinear = d3_time_scaleLinear;
+D3TimeScale._scale = d3_time_scale;
+D3TimeScale._scaleFormat = d3_time_scaleFormat;
+
+module.exports = D3TimeScale;

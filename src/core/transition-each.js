@@ -1,3 +1,9 @@
+var D3Transition = require("./transition"),
+    d3_transitionPrototype = D3Transition._transitionPrototype,
+    d3_transitionInherit = D3Transition._transitionInherit,
+    d3_transitionInheritId = D3Transition._transitionInheritId,
+    d3_selection_each = require("./selection-each")._each;
+
 d3_transitionPrototype.each = function(type, listener) {
   var id = this.id;
   if (arguments.length < 2) {

@@ -1,4 +1,4 @@
-d3.scale.quantize = function() {
+var D3ScaleQuantize = function() {
   return d3_scale_quantize(0, 1, [0, 1]);
 };
 
@@ -34,3 +34,5 @@ function d3_scale_quantize(x0, x1, range) {
 
   return rescale();
 }
+
+module.exports = D3ScaleQuantize;

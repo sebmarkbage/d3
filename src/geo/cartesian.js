@@ -3,13 +3,13 @@
 // whereas add and normalize operate in-place
 
 function d3_geo_cartesian(spherical) {
-  var λ = spherical[0],
-      φ = spherical[1],
-      cosφ = Math.cos(φ);
+  var _u03bb = spherical[0],
+      _u03c6 = spherical[1],
+      cos_u03c6 = Math.cos(_u03c6);
   return [
-    cosφ * Math.cos(λ),
-    cosφ * Math.sin(λ),
-    Math.sin(φ)
+    cos_u03c6 * Math.cos(_u03bb),
+    cos_u03c6 * Math.sin(_u03bb),
+    Math.sin(_u03c6)
   ];
 }
 
@@ -45,3 +45,10 @@ function d3_geo_cartesianNormalize(d) {
   d[1] /= l;
   d[2] /= l;
 }
+
+exports._cartesian = d3_geo_cartesian;
+exports._cartesianDot = d3_geo_cartesianDot;
+exports._cartesianCross = d3_geo_cartesianCross;
+exports._cartesianAdd = d3_geo_cartesianAdd;
+exports._cartesianScale = d3_geo_cartesianScale;
+exports._cartesianNormalize = d3_geo_cartesianNormalize;

@@ -1,4 +1,10 @@
-d3.svg.symbol = function() {
+var D3 = require("../core/core"),
+    d3_functor = require("../core/functor")._functor,
+    _u03c0 = D3._u03c0,
+    d3_radians = D3._radians,
+    D3Map = require("../core/map");
+
+var D3SVGSymbol = function() {
   var type = d3_svg_symbolType,
       size = d3_svg_symbolSize;
 
@@ -33,7 +39,7 @@ function d3_svg_symbolType() {
 }
 
 function d3_svg_symbolCircle(size) {
-  var r = Math.sqrt(size / π);
+  var r = Math.sqrt(size / _u03c0);
   return "M0," + r
       + "A" + r + "," + r + " 0 1,1 0," + (-r)
       + "A" + r + "," + r + " 0 1,1 0," + r
@@ -41,7 +47,7 @@ function d3_svg_symbolCircle(size) {
 }
 
 // TODO cross-diagonal?
-var d3_svg_symbols = d3.map({
+var d3_svg_symbols = D3Map({
   "circle": d3_svg_symbolCircle,
   "cross": function(size) {
     var r = Math.sqrt(size / 5) / 2;
@@ -94,7 +100,9 @@ var d3_svg_symbols = d3.map({
   }
 });
 
-d3.svg.symbolTypes = d3_svg_symbols.keys();
+D3SVGSymbol.types = d3_svg_symbols.keys();
 
 var d3_svg_symbolSqrt3 = Math.sqrt(3),
     d3_svg_symbolTan30 = Math.tan(30 * d3_radians);
+
+module.exports = D3SVGSymbol;

@@ -1,3 +1,5 @@
+var d3_selectionPrototype = require("./selection")._selectionPrototype;
+
 d3_selectionPrototype.property = function(name, value) {
   if (arguments.length < 2) {
 

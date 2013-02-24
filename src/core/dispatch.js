@@ -1,4 +1,6 @@
-d3.dispatch = function() {
+var d3_Map = require("./map")._Map;
+
+var D3Dispatch = function() {
   var dispatch = new d3_dispatch,
       i = -1,
       n = arguments.length;
@@ -58,3 +60,8 @@ function d3_dispatch_event(dispatch) {
 
   return event;
 }
+
+D3Dispatch._dispatch = d3_dispatch;
+D3Dispatch._event = d3_dispatch_event;
+
+module.exports = D3Dispatch;

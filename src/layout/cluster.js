@@ -1,7 +1,14 @@
+var D3LayoutTree = require("./tree"),
+    D3LayoutHierarchy = require("./hierarchy"),
+    d3_layout_treeSeparation = D3LayoutTree._treeSeparation,
+    d3_layout_treeVisitAfter = D3LayoutTree._treeVisitAfter,
+    d3_layout_hierarchyRebind = D3LayoutHierarchy._hierarchyRebind,
+    D3Max = require("../core/max");
+
 // Implements a hierarchical layout using the cluster (or dendrogram)
 // algorithm.
-d3.layout.cluster = function() {
-  var hierarchy = d3.layout.hierarchy().sort(null).value(null),
+var D3LayoutCluster = function() {
+  var hierarchy = D3LayoutHierarchy().sort(null).value(null),
       separation = d3_layout_treeSeparation,
       size = [1, 1]; // width, height
 
@@ -55,7 +62,7 @@ d3.layout.cluster = function() {
 };
 
 function d3_layout_clusterY(children) {
-  return 1 + d3.max(children, function(child) {
+  return 1 + D3Max(children, function(child) {
     return child.y;
   });
 }
@@ -75,3 +82,5 @@ function d3_layout_clusterRight(node) {
   var children = node.children, n;
   return children && (n = children.length) ? d3_layout_clusterRight(children[n - 1]) : node;
 }
+
+module.exports = D3LayoutCluster;

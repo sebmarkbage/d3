@@ -1,4 +1,7 @@
-d3.svg.area.radial = function() {
+var d3_svg_area = require("./area")._area,
+    d3_svg_lineRadial = require("./line-radial")._lineRadial;
+
+var D3SVGAreaRadial = function() {
   var area = d3_svg_area(d3_svg_lineRadial);
   area.radius = area.x, delete area.x;
   area.innerRadius = area.x0, delete area.x0;
@@ -8,3 +11,5 @@ d3.svg.area.radial = function() {
   area.endAngle = area.y1, delete area.y1;
   return area;
 };
+
+module.exports = D3SVGAreaRadial;

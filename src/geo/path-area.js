@@ -1,3 +1,5 @@
+var d3_noop = require("../core/noop")._noop;
+
 // TODO Unify this code with d3.geom.polygon area?
 
 var d3_geo_pathAreaSum, d3_geo_pathAreaPolygon, d3_geo_pathArea = {
@@ -19,13 +21,13 @@ var d3_geo_pathAreaSum, d3_geo_pathAreaPolygon, d3_geo_pathArea = {
 function d3_geo_pathAreaRingStart() {
   var x00, y00, x0, y0;
 
-  // For the first point, …
+  // For the first point, _u2026
   d3_geo_pathArea.point = function(x, y) {
     d3_geo_pathArea.point = nextPoint;
     x00 = x0 = x, y00 = y0 = y;
   };
 
-  // For subsequent points, …
+  // For subsequent points, _u2026
   function nextPoint(x, y) {
     d3_geo_pathAreaPolygon += y0 * x - x0 * y;
     x0 = x, y0 = y;
@@ -36,3 +38,6 @@ function d3_geo_pathAreaRingStart() {
     nextPoint(x00, y00);
   };
 }
+
+exports._pathAreaSum = d3_geo_pathAreaSum;
+exports._pathArea = d3_geo_pathArea;

@@ -1,6 +1,10 @@
+var d3_identity = require("./identity")._identity,
+    _u03c0 = require("./core")._u03c0,
+    D3Map = require("./map");
+
 var d3_ease_default = function() { return d3_identity; };
 
-var d3_ease = d3.map({
+var d3_ease = D3Map({
   linear: d3_ease_default,
   poly: d3_ease_poly,
   quad: function() { return d3_ease_quad; },
@@ -13,14 +17,14 @@ var d3_ease = d3.map({
   bounce: function() { return d3_ease_bounce; }
 });
 
-var d3_ease_mode = d3.map({
+var d3_ease_mode = D3Map({
   "in": d3_identity,
   "out": d3_ease_reverse,
   "in-out": d3_ease_reflect,
   "out-in": function(f) { return d3_ease_reflect(d3_ease_reverse(f)); }
 });
 
-d3.ease = function(name) {
+var D3Ease = function(name) {
   var i = name.indexOf("-"),
       t = i >= 0 ? name.substring(0, i) : name,
       m = i >= 0 ? name.substring(i + 1) : "in";
@@ -70,7 +74,7 @@ function d3_ease_poly(e) {
 }
 
 function d3_ease_sin(t) {
-  return 1 - Math.cos(t * π / 2);
+  return 1 - Math.cos(t * _u03c0 / 2);
 }
 
 function d3_ease_exp(t) {
@@ -84,10 +88,10 @@ function d3_ease_circle(t) {
 function d3_ease_elastic(a, p) {
   var s;
   if (arguments.length < 2) p = 0.45;
-  if (arguments.length) s = p / (2 * π) * Math.asin(1 / a);
+  if (arguments.length) s = p / (2 * _u03c0) * Math.asin(1 / a);
   else a = 1, s = p / 4;
   return function(t) {
-    return 1 + a * Math.pow(2, 10 * -t) * Math.sin((t - s) * 2 * π / p);
+    return 1 + a * Math.pow(2, 10 * -t) * Math.sin((t - s) * 2 * _u03c0 / p);
   };
 }
 
@@ -104,3 +108,7 @@ function d3_ease_bounce(t) {
       : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + .9375
       : 7.5625 * (t -= 2.625 / 2.75) * t + .984375;
 }
+
+D3Ease._cubicInOut = d3_ease_cubicInOut;
+
+module.exports = D3Ease;

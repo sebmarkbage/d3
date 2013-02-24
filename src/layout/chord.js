@@ -1,4 +1,7 @@
-d3.layout.chord = function() {
+var _u03c0 = require("../core/core")._u03c0,
+    D3Range = require("../core/range");
+
+var D3LayoutChord = function() {
   var chord = {},
       chords,
       groups,
@@ -12,7 +15,7 @@ d3.layout.chord = function() {
   function relayout() {
     var subgroups = {},
         groupSums = [],
-        groupIndex = d3.range(n),
+        groupIndex = D3Range(n),
         subgroupIndex = [],
         k,
         x,
@@ -29,18 +32,18 @@ d3.layout.chord = function() {
         x += matrix[i][j];
       }
       groupSums.push(x);
-      subgroupIndex.push(d3.range(n));
+      subgroupIndex.push(D3Range(n));
       k += x;
     }
 
-    // Sort groups…
+    // Sort groups_u2026
     if (sortGroups) {
       groupIndex.sort(function(a, b) {
         return sortGroups(groupSums[a], groupSums[b]);
       });
     }
 
-    // Sort subgroups…
+    // Sort subgroups_u2026
     if (sortSubgroups) {
       subgroupIndex.forEach(function(d, i) {
         d.sort(function(a, b) {
@@ -52,7 +55,7 @@ d3.layout.chord = function() {
     // Convert the sum to scaling factor for [0, 2pi].
     // TODO Allow start and end angle to be specified.
     // TODO Allow padding to be specified as percentage?
-    k = (2 * π - padding * n) / k;
+    k = (2 * _u03c0 - padding * n) / k;
 
     // Compute the start and end angle for each group and subgroup.
     // Note: Opera has a bug reordering object literal properties!
@@ -151,3 +154,5 @@ d3.layout.chord = function() {
 
   return chord;
 };
+
+module.exports = D3LayoutChord;

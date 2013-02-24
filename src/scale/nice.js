@@ -21,3 +21,6 @@ function d3_scale_nice(domain, nice) {
 function d3_scale_niceDefault() {
   return Math;
 }
+
+exports._nice = d3_scale_nice;
+exports._niceDefault = d3_scale_niceDefault;

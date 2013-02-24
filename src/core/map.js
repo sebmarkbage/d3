@@ -1,4 +1,6 @@
-d3.map = function(object) {
+var d3_class = require("./class")._class;
+
+var D3Map = function(object) {
   var map = new d3_Map;
   for (var key in object) map.set(key, object[key]);
   return map;
@@ -46,3 +48,7 @@ d3_class(d3_Map, {
 
 var d3_map_prefix = "\0", // prevent collision with built-ins
     d3_map_prefixCode = d3_map_prefix.charCodeAt(0);
+
+D3Map._Map = d3_Map;
+
+module.exports = D3Map;

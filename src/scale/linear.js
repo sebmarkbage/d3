@@ -1,5 +1,18 @@
-d3.scale.linear = function() {
-  return d3_scale_linear([0, 1], [0, 1], d3.interpolate, false);
+var D3CoreUninterpolate = require("../core/uninterpolate"),
+    d3_scale_polylinear = require("./polylinear")._polylinear,
+    d3_scale_bilinear = require("./bilinear")._bilinear,
+    d3_uninterpolateClamp = D3CoreUninterpolate._uninterpolateClamp,
+    d3_uninterpolateNumber = D3CoreUninterpolate._uninterpolateNumber,
+    d3_scale_nice = require("./nice")._nice,
+    d3_scaleExtent = require("./scale")._scaleExtent,
+    D3Interpolate = require("../core/interpolate"),
+    D3Rebind = require("../core/rebind"),
+    D3Range = require("../core/range"),
+    D3 = require("../core/core"),
+    D3Format = require("../core/format");
+
+var D3ScaleLinear = function() {
+  return d3_scale_linear([0, 1], [0, 1], D3Interpolate, false);
 };
 
 function d3_scale_linear(domain, range, interpolate, clamp) {
@@ -10,7 +23,7 @@ function d3_scale_linear(domain, range, interpolate, clamp) {
     var linear = Math.min(domain.length, range.length) > 2 ? d3_scale_polylinear : d3_scale_bilinear,
         uninterpolate = clamp ? d3_uninterpolateClamp : d3_uninterpolateNumber;
     output = linear(domain, range, uninterpolate, interpolate);
-    input = linear(range, domain, uninterpolate, d3.interpolate);
+    input = linear(range, domain, uninterpolate, D3Interpolate);
     return scale;
   }
 
@@ -36,7 +49,7 @@ function d3_scale_linear(domain, range, interpolate, clamp) {
   };
 
   scale.rangeRound = function(x) {
-    return scale.range(x).interpolate(d3.interpolateRound);
+    return scale.range(x).interpolate(D3Interpolate.round);
   };
 
   scale.clamp = function(x) {
@@ -72,7 +85,7 @@ function d3_scale_linear(domain, range, interpolate, clamp) {
 }
 
 function d3_scale_linearRebind(scale, linear) {
-  return d3.rebind(scale, linear, "range", "rangeRound", "interpolate", "clamp");
+  return D3Rebind(scale, linear, "range", "rangeRound", "interpolate", "clamp");
 }
 
 function d3_scale_linearNice(dx) {
@@ -102,9 +115,16 @@ function d3_scale_linearTickRange(domain, m) {
 }
 
 function d3_scale_linearTicks(domain, m) {
-  return d3.range.apply(d3, d3_scale_linearTickRange(domain, m));
+  return D3Range.apply(D3, d3_scale_linearTickRange(domain, m));
 }
 
 function d3_scale_linearTickFormat(domain, m) {
-  return d3.format(",." + Math.max(0, -Math.floor(Math.log(d3_scale_linearTickRange(domain, m)[2]) / Math.LN10 + .01)) + "f");
+  return D3Format(",." + Math.max(0, -Math.floor(Math.log(d3_scale_linearTickRange(domain, m)[2]) / Math.LN10 + .01)) + "f");
 }
+
+D3ScaleLinear._linearTicks = d3_scale_linearTicks;
+D3ScaleLinear._linearTickFormat = d3_scale_linearTickFormat;
+D3ScaleLinear._linearNice = d3_scale_linearNice;
+D3ScaleLinear._linearRebind = d3_scale_linearRebind;
+
+module.exports = D3ScaleLinear;

@@ -5,3 +5,5 @@ function d3_scale_bilinear(domain, range, uninterpolate, interpolate) {
     return i(u(x));
   };
 }
+
+exports._bilinear = d3_scale_bilinear;

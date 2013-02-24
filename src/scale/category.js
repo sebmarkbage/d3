@@ -1,22 +1,24 @@
+var D3ScaleOrdinal = require("./ordinal");
+
 /*
  * This product includes color specifications and designs developed by Cynthia
  * Brewer (http://colorbrewer.org/). See lib/colorbrewer for more information.
  */
 
-d3.scale.category10 = function() {
-  return d3.scale.ordinal().range(d3_category10);
+var D3ScaleCategory10 = function() {
+  return D3ScaleOrdinal().range(d3_category10);
 };
 
-d3.scale.category20 = function() {
-  return d3.scale.ordinal().range(d3_category20);
+D3ScaleCategory10.category20 = function() {
+  return D3ScaleOrdinal().range(d3_category20);
 };
 
-d3.scale.category20b = function() {
-  return d3.scale.ordinal().range(d3_category20b);
+D3ScaleCategory10.category20b = function() {
+  return D3ScaleOrdinal().range(d3_category20b);
 };
 
-d3.scale.category20c = function() {
-  return d3.scale.ordinal().range(d3_category20c);
+D3ScaleCategory10.category20c = function() {
+  return D3ScaleOrdinal().range(d3_category20c);
 };
 
 var d3_category10 = [
@@ -52,3 +54,5 @@ var d3_category20c = [
   "#756bb1", "#9e9ac8", "#bcbddc", "#dadaeb",
   "#636363", "#969696", "#bdbdbd", "#d9d9d9"
 ];
+
+module.exports = D3ScaleCategory10;

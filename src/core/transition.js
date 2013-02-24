@@ -1,3 +1,11 @@
+var d3_arraySubclass = require("./array")._arraySubclass,
+    d3_ease_cubicInOut = require("./ease")._cubicInOut,
+    d3_selectionPrototype = require("./selection")._selectionPrototype,
+    d3_selectionRoot = require("./selection-root")._selectionRoot,
+    d3_Map = require("./map")._Map,
+    D3Dispatch = require("./dispatch"),
+    D3Timer = require("./timer");
+
 function d3_transition(groups, id) {
   d3_arraySubclass(groups, d3_transitionPrototype);
 
@@ -15,13 +23,13 @@ d3_transitionPrototype.call = d3_selectionPrototype.call;
 d3_transitionPrototype.empty = d3_selectionPrototype.empty;
 d3_transitionPrototype.node = d3_selectionPrototype.node;
 
-d3.transition = function(selection) {
+var D3Transition = function(selection) {
   return arguments.length
       ? (d3_transitionInheritId ? selection.transition() : selection)
       : d3_selectionRoot.transition();
 };
 
-d3.transition.prototype = d3_transitionPrototype;
+D3Transition.prototype = d3_transitionPrototype;
 
 function d3_transitionNode(node, i, id, inherit) {
   var lock = node.__transition__ || (node.__transition__ = {active: 0, count: 0}),
@@ -32,7 +40,7 @@ function d3_transitionNode(node, i, id, inherit) {
 
     transition = lock[id] = {
       tween: new d3_Map,
-      event: d3.dispatch("start", "end"), // TODO construct lazily?
+      event: D3Dispatch("start", "end"), // TODO construct lazily?
       time: time,
       ease: inherit.ease,
       delay: inherit.delay,
@@ -41,7 +49,7 @@ function d3_transitionNode(node, i, id, inherit) {
 
     ++lock.count;
 
-    d3.timer(function(elapsed) {
+    D3Timer(function(elapsed) {
       var d = node.__data__,
           ease = transition.ease,
           event = transition.event,
@@ -51,7 +59,7 @@ function d3_transitionNode(node, i, id, inherit) {
 
       return delay <= elapsed
           ? start(elapsed)
-          : d3.timer(start, delay, time), 1;
+          : D3Timer(start, delay, time), 1;
 
       function start(elapsed) {
         if (lock.active > id) return stop();
@@ -64,7 +72,7 @@ function d3_transitionNode(node, i, id, inherit) {
           }
         });
 
-        if (!tick(elapsed)) d3.timer(tick, 0, time);
+        if (!tick(elapsed)) D3Timer(tick, 0, time);
         return 1;
       }
 
@@ -96,3 +104,12 @@ function d3_transitionNode(node, i, id, inherit) {
     return transition;
   }
 }
+
+D3Transition._transitionPrototype = d3_transitionPrototype;
+D3Transition._transitionId = d3_transitionId;
+D3Transition._transitionInheritId = d3_transitionInheritId;
+D3Transition._transitionInherit = d3_transitionInherit;
+D3Transition._transition = d3_transition;
+D3Transition._transitionNode = d3_transitionNode;
+
+module.exports = D3Transition;

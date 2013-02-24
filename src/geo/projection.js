@@ -1,5 +1,14 @@
-d3.geo.projection = d3_geo_projection;
-d3.geo.projectionMutator = d3_geo_projectionMutator;
+var D3 = require("../core/core"),
+    d3_geo_resample = require("./resample")._resample,
+    d3_geo_clipAntimeridian = require("./clip-antimeridian")._clipAntimeridian,
+    d3_radians = D3._radians,
+    d3_degrees = D3._degrees,
+    d3_geo_compose = require("./compose")._compose,
+    _u03c0 = D3._u03c0,
+    D3Rebind = require("../core/rebind");
+
+var D3GeoProjection = d3_geo_projection;
+D3GeoProjection.mutator = d3_geo_projectionMutator;
 
 function d3_geo_projection(project) {
   return d3_geo_projectionMutator(function() { return project; })();
@@ -9,22 +18,22 @@ function d3_geo_projectionMutator(projectAt) {
   var project,
       rotate,
       projectRotate,
-      projectResample = d3_geo_resample(function(x, y) { x = project(x, y); return [x[0] * k + δx, δy - x[1] * k]; }),
+      projectResample = d3_geo_resample(function(x, y) { x = project(x, y); return [x[0] * k + _u03b4x, _u03b4y - x[1] * k]; }),
       k = 150, // scale
       x = 480, y = 250, // translate
-      λ = 0, φ = 0, // center
-      δλ = 0, δφ = 0, δγ = 0, // rotate
-      δx, δy, // center
+      _u03bb = 0, _u03c6 = 0, // center
+      _u03b4_u03bb = 0, _u03b4_u03c6 = 0, _u03b4_u03b3 = 0, // rotate
+      _u03b4x, _u03b4y, // center
       clip = d3_geo_clipAntimeridian,
       clipAngle = null;
 
   function projection(point) {
     point = projectRotate(point[0] * d3_radians, point[1] * d3_radians);
-    return [point[0] * k + δx, δy - point[1] * k];
+    return [point[0] * k + _u03b4x, _u03b4y - point[1] * k];
   }
 
   function invert(point) {
-    point = projectRotate.invert((point[0] - δx) / k, (δy - point[1]) / k);
+    point = projectRotate.invert((point[0] - _u03b4x) / k, (_u03b4y - point[1]) / k);
     return point && [point[0] * d3_degrees, point[1] * d3_degrees];
   }
 
@@ -34,7 +43,7 @@ function d3_geo_projectionMutator(projectAt) {
 
   projection.clipAngle = function(_) {
     if (!arguments.length) return clipAngle;
-    clip = _ == null ? (clipAngle = _, d3_geo_clipAntimeridian) : d3_geo_clipCircle(clipAngle = +_);
+    clip = _ == null ? (clipAngle = _, d3_geo_clipAntimeridian) : require("./clip-circle")._clipCircle(clipAngle = +_);
     return projection;
   };
 
@@ -52,27 +61,27 @@ function d3_geo_projectionMutator(projectAt) {
   };
 
   projection.center = function(_) {
-    if (!arguments.length) return [λ * d3_degrees, φ * d3_degrees];
-    λ = _[0] % 360 * d3_radians;
-    φ = _[1] % 360 * d3_radians;
+    if (!arguments.length) return [_u03bb * d3_degrees, _u03c6 * d3_degrees];
+    _u03bb = _[0] % 360 * d3_radians;
+    _u03c6 = _[1] % 360 * d3_radians;
     return reset();
   };
 
   projection.rotate = function(_) {
-    if (!arguments.length) return [δλ * d3_degrees, δφ * d3_degrees, δγ * d3_degrees];
-    δλ = _[0] % 360 * d3_radians;
-    δφ = _[1] % 360 * d3_radians;
-    δγ = _.length > 2 ? _[2] % 360 * d3_radians : 0;
+    if (!arguments.length) return [_u03b4_u03bb * d3_degrees, _u03b4_u03c6 * d3_degrees, _u03b4_u03b3 * d3_degrees];
+    _u03b4_u03bb = _[0] % 360 * d3_radians;
+    _u03b4_u03c6 = _[1] % 360 * d3_radians;
+    _u03b4_u03b3 = _.length > 2 ? _[2] % 360 * d3_radians : 0;
     return reset();
   };
 
-  d3.rebind(projection, projectResample, "precision");
+  D3Rebind(projection, projectResample, "precision");
 
   function reset() {
-    projectRotate = d3_geo_compose(rotate = d3_geo_rotation(δλ, δφ, δγ), project);
-    var center = project(λ, φ);
-    δx = x - center[0] * k;
-    δy = y + center[1] * k;
+    projectRotate = d3_geo_compose(rotate = require("./rotation")._rotation(_u03b4_u03bb, _u03b4_u03c6, _u03b4_u03b3), project);
+    var center = project(_u03bb, _u03c6);
+    _u03b4x = x - center[0] * k;
+    _u03b4y = y + center[1] * k;
     return projection;
   }
 
@@ -87,7 +96,7 @@ function d3_geo_projectionRadiansRotate(rotate, stream) {
   return {
     point: function(x, y) {
       y = rotate(x * d3_radians, y * d3_radians), x = y[0];
-      stream.point(x > π ? x - 2 * π : x < -π ? x + 2 * π : x, y[1]);
+      stream.point(x > _u03c0 ? x - 2 * _u03c0 : x < -_u03c0 ? x + 2 * _u03c0 : x, y[1]);
     },
     sphere: function() { stream.sphere(); },
     lineStart: function() { stream.lineStart(); },
@@ -96,3 +105,8 @@ function d3_geo_projectionRadiansRotate(rotate, stream) {
     polygonEnd: function() { stream.polygonEnd(); }
   };
 }
+
+D3GeoProjection._projection = d3_geo_projection;
+D3GeoProjection._projectionMutator = d3_geo_projectionMutator;
+
+module.exports = D3GeoProjection;

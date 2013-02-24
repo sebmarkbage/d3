@@ -1,3 +1,8 @@
+var D3Transition = require("./transition"),
+    d3_transitionPrototype = D3Transition._transitionPrototype,
+    d3_selection_filter = require("./selection-filter")._filter,
+    d3_transition = D3Transition._transition;
+
 d3_transitionPrototype.filter = function(filter) {
   var subgroups = [],
       subgroup,

@@ -1,4 +1,4 @@
-d3.time = {};
+var D3Time = {};
 
 var d3_time = Date,
     d3_time_daySymbols = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -33,3 +33,9 @@ d3_time_utc.prototype = {
 };
 
 var d3_time_prototype = Date.prototype;
+
+D3Time._time = d3_time;
+D3Time._daySymbols = d3_time_daySymbols;
+D3Time._utc = d3_time_utc;
+
+module.exports = D3Time;

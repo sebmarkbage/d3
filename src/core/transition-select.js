@@ -1,3 +1,9 @@
+var D3Transition = require("./transition"),
+    d3_transitionPrototype = D3Transition._transitionPrototype,
+    d3_selection_selector = require("./selection-select")._selector,
+    d3_transitionNode = D3Transition._transitionNode,
+    d3_transition = D3Transition._transition;
+
 d3_transitionPrototype.select = function(selector) {
   var id = this.id,
       subgroups = [],

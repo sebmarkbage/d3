@@ -1,4 +1,4 @@
-d3.geo.stream = function(object, listener) {
+var D3GeoStream = function(object, listener) {
   if (d3_geo_streamObjectType.hasOwnProperty(object.type)) {
     d3_geo_streamObjectType[object.type](object, listener);
   } else {
@@ -67,3 +67,5 @@ function d3_geo_streamPolygon(coordinates, listener) {
   while (++i < n) d3_geo_streamLine(coordinates[i], listener, 1);
   listener.polygonEnd();
 }
+
+module.exports = D3GeoStream;

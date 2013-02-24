@@ -10,3 +10,5 @@ function d3_geo_compose(a, b) {
 
   return compose;
 }
+
+exports._compose = d3_geo_compose;

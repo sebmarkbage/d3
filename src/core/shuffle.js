@@ -1,4 +1,4 @@
-d3.shuffle = function(array) {
+var D3Shuffle = function(array) {
   var m = array.length, t, i;
   while (m) {
     i = Math.random() * m-- | 0;
@@ -6,3 +6,5 @@ d3.shuffle = function(array) {
   }
   return array;
 };
+
+module.exports = D3Shuffle;

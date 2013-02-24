@@ -2,7 +2,7 @@
 // input link, a path is computed that travels through the tree, up the parent
 // hierarchy to the least common ancestor, and then back down to the destination
 // node. Each path is simply an array of nodes.
-d3.layout.bundle = function() {
+var D3LayoutBundle = function() {
   return function(links) {
     var paths = [],
         i = -1,
@@ -55,3 +55,5 @@ function d3_layout_bundleLeastCommonAncestor(a, b) {
   }
   return sharedNode;
 }
+
+module.exports = D3LayoutBundle;

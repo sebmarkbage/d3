@@ -1,7 +1,10 @@
+var D3LayoutHierarchy = require("./hierarchy"),
+    d3_layout_hierarchyRebind = D3LayoutHierarchy._hierarchyRebind;
+
 // Squarified Treemaps by Mark Bruls, Kees Huizing, and Jarke J. van Wijk
 // Modified to support a target aspect ratio by Jeff Heer
-d3.layout.treemap = function() {
-  var hierarchy = d3.layout.hierarchy(),
+var D3LayoutTreemap = function() {
+  var hierarchy = D3LayoutHierarchy(),
       round = Math.round,
       size = [1, 1], // width, height
       padding = null,
@@ -225,3 +228,5 @@ function d3_layout_treemapPad(node, padding) {
   if (dy < 0) { y += dy / 2; dy = 0; }
   return {x: x, y: y, dx: dx, dy: dy};
 }
+
+module.exports = D3LayoutTreemap;

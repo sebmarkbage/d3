@@ -27,3 +27,6 @@ function(array, prototype) {
 function(array, prototype) {
   for (var property in prototype) array[property] = prototype[property];
 };
+
+exports._array = d3_array;
+exports._arraySubclass = d3_arraySubclass;

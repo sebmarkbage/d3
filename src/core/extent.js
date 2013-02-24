@@ -1,4 +1,4 @@
-d3.extent = function(array, f) {
+var D3Extent = function(array, f) {
   var i = -1,
       n = array.length,
       a,
@@ -19,3 +19,5 @@ d3.extent = function(array, f) {
   }
   return [a, c];
 };
+
+module.exports = D3Extent;

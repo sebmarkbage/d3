@@ -1,4 +1,14 @@
-d3.geo.circle = function() {
+var D3 = require("../core/core"),
+    D3GeoCartesian = require("./cartesian"),
+    d3_radians = D3._radians,
+    d3_degrees = D3._degrees,
+    _u03c0 = D3._u03c0,
+    d3_geo_spherical = require("./spherical")._spherical,
+    d3_geo_cartesian = D3GeoCartesian._cartesian,
+    d3_geo_cartesianNormalize = D3GeoCartesian._cartesianNormalize,
+    _u03b5 = D3._u03b5;
+
+var D3GeoCircle = function() {
   var origin = [0, 0],
       angle,
       precision = 6,
@@ -6,7 +16,7 @@ d3.geo.circle = function() {
 
   function circle() {
     var center = typeof origin === "function" ? origin.apply(this, arguments) : origin,
-        rotate = d3_geo_rotation(-center[0] * d3_radians, -center[1] * d3_radians, 0).invert,
+        rotate = require("./rotation")._rotation(-center[0] * d3_radians, -center[1] * d3_radians, 0).invert,
         ring = [];
 
     interpolate(null, null, 1, {
@@ -40,7 +50,7 @@ d3.geo.circle = function() {
   return circle.angle(90);
 };
 
-// Interpolates along a circle centered at [0°, 0°], with a given radius and
+// Interpolates along a circle centered at [0_u00b0, 0_u00b0], with a given radius and
 // precision.
 function d3_geo_circleInterpolate(radians, precision) {
   var cr = Math.cos(radians),
@@ -49,9 +59,9 @@ function d3_geo_circleInterpolate(radians, precision) {
     if (from != null) {
       from = d3_geo_circleAngle(cr, from);
       to = d3_geo_circleAngle(cr, to);
-      if (direction > 0 ? from < to: from > to) from += direction * 2 * π;
+      if (direction > 0 ? from < to: from > to) from += direction * 2 * _u03c0;
     } else {
-      from = radians + direction * 2 * π;
+      from = radians + direction * 2 * _u03c0;
       to = radians;
     }
     var point;
@@ -71,5 +81,9 @@ function d3_geo_circleAngle(cr, point) {
   a[0] -= cr;
   d3_geo_cartesianNormalize(a);
   var angle = Math.acos(Math.max(-1, Math.min(1, -a[1])));
-  return ((-a[2] < 0 ? -angle : angle) + 2 * Math.PI - ε) % (2 * Math.PI);
+  return ((-a[2] < 0 ? -angle : angle) + 2 * Math.PI - _u03b5) % (2 * Math.PI);
 }
+
+D3GeoCircle._circleInterpolate = d3_geo_circleInterpolate;
+
+module.exports = D3GeoCircle;

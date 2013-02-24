@@ -1,4 +1,14 @@
-d3.svg.brush = function() {
+var D3CoreEvent = require("../core/event"),
+    d3_eventDispatch = D3CoreEvent._eventDispatch,
+    d3_scaleRange = require("../scale/scale")._scaleRange,
+    d3_eventCancel = D3CoreEvent._eventCancel,
+    D3Select = require("../core/selection-root"),
+    D3 = require("../core/core"),
+    D3Touches = require("../core/touches"),
+    D3Mouse = require("../core/mouse"),
+    D3Rebind = require("../core/rebind");
+
+var D3SVGBrush = function() {
   var event = d3_eventDispatch(brush, "brushstart", "brush", "brushend"),
       x = null, // x-scale, optional
       y = null, // y-scale, optional
@@ -8,7 +18,7 @@ d3.svg.brush = function() {
 
   function brush(g) {
     g.each(function() {
-      var g = d3.select(this),
+      var g = D3Select(this),
           bg = g.selectAll(".background").data([0]),
           fg = g.selectAll(".extent").data([0]),
           tz = g.selectAll(".resize").data(resizes, String),
@@ -82,9 +92,9 @@ d3.svg.brush = function() {
 
   function brushstart() {
     var target = this,
-        eventTarget = d3.select(d3.event.target),
+        eventTarget = D3Select(D3.event.target),
         event_ = event.of(target, arguments),
-        g = d3.select(target),
+        g = D3Select(target),
         resizing = eventTarget.datum(),
         resizingX = !/^(n|s)$/.test(resizing) && x,
         resizingY = !/^(e|w)$/.test(resizing) && y,
@@ -93,7 +103,7 @@ d3.svg.brush = function() {
         origin = mouse(),
         offset;
 
-    var w = d3.select(window)
+    var w = D3Select(window)
         .on("mousemove.brush", brushmove)
         .on("mouseup.brush", brushend)
         .on("touchmove.brush", brushmove)
@@ -119,11 +129,11 @@ d3.svg.brush = function() {
     }
 
     // If the ALT key is down when starting a brush, the center is at the mouse.
-    else if (d3.event.altKey) center = origin.slice();
+    else if (D3.event.altKey) center = origin.slice();
 
     // Propagate the active cursor to the body for the drag duration.
     g.style("pointer-events", "none").selectAll(".resize").style("display", null);
-    d3.select("body").style("cursor", eventTarget.style("cursor"));
+    D3Select("body").style("cursor", eventTarget.style("cursor"));
 
     // Notify listeners.
     event_({type: "brushstart"});
@@ -131,12 +141,12 @@ d3.svg.brush = function() {
     d3_eventCancel();
 
     function mouse() {
-      var touches = d3.event.changedTouches;
-      return touches ? d3.touches(target, touches)[0] : d3.mouse(target);
+      var touches = D3.event.changedTouches;
+      return touches ? D3Touches(target, touches)[0] : D3Mouse(target);
     }
 
     function keydown() {
-      if (d3.event.keyCode == 32) {
+      if (D3.event.keyCode == 32) {
         if (!dragging) {
           center = null;
           origin[0] -= extent[1][0];
@@ -148,7 +158,7 @@ d3.svg.brush = function() {
     }
 
     function keyup() {
-      if (d3.event.keyCode == 32 && dragging == 2) {
+      if (D3.event.keyCode == 32 && dragging == 2) {
         origin[0] += extent[1][0];
         origin[1] += extent[1][1];
         dragging = 0;
@@ -169,7 +179,7 @@ d3.svg.brush = function() {
       if (!dragging) {
 
         // If needed, determine the center from the current extent.
-        if (d3.event.altKey) {
+        if (D3.event.altKey) {
           if (!center) center = [(extent[0][0] + extent[1][0]) / 2, (extent[0][1] + extent[1][1]) / 2];
 
           // Update the origin, for when the ALT key is released.
@@ -247,7 +257,7 @@ d3.svg.brush = function() {
 
       // reset the cursor styles
       g.style("pointer-events", "all").selectAll(".resize").style("display", brush.empty() ? "none" : null);
-      d3.select("body").style("cursor", null);
+      D3Select("body").style("cursor", null);
 
       w .on("mousemove.brush", null)
         .on("mouseup.brush", null)
@@ -336,7 +346,7 @@ d3.svg.brush = function() {
         || (y && extent[0][1] === extent[1][1]);
   };
 
-  return d3.rebind(brush, event, "on");
+  return D3Rebind(brush, event, "on");
 };
 
 var d3_svg_brushCursor = {
@@ -356,3 +366,5 @@ var d3_svg_brushResizes = [
   ["n", "s"],
   []
 ];
+
+module.exports = D3SVGBrush;

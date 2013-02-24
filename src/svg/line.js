@@ -1,3 +1,8 @@
+var d3_true = require("../core/true")._true,
+    d3_functor = require("../core/functor")._functor,
+    d3_identity = require("../core/identity")._identity,
+    D3Map = require("../core/map");
+
 function d3_svg_line(projection) {
   var x = d3_svg_lineX,
       y = d3_svg_lineY,
@@ -67,7 +72,7 @@ function d3_svg_line(projection) {
   return line;
 }
 
-d3.svg.line = function() {
+var D3SVGLine = function() {
   return d3_svg_line(d3_identity);
 };
 
@@ -82,7 +87,7 @@ function d3_svg_lineY(d) {
 }
 
 // The various interpolators supported by the `line` class.
-var d3_svg_lineInterpolators = d3.map({
+var d3_svg_lineInterpolators = D3Map({
   "linear": d3_svg_lineLinear,
   "linear-closed": d3_svg_lineLinearClosed,
   "step-before": d3_svg_lineStepBefore,
@@ -331,7 +336,7 @@ var d3_svg_lineBasisBezier1 = [0, 2/3, 1/3, 0],
     d3_svg_lineBasisBezier2 = [0, 1/3, 2/3, 0],
     d3_svg_lineBasisBezier3 = [0, 1/6, 2/3, 1/6];
 
-// Pushes a "C" Bézier curve onto the specified path array, given the
+// Pushes a "C" B_u00e9zier curve onto the specified path array, given the
 // two specified four-element arrays which define the control points.
 function d3_svg_lineBasisBezier(path, x, y) {
   path.push(
@@ -381,7 +386,7 @@ function d3_svg_lineMonotoneTangents(points) {
   // 1. Compute the slopes of the secant lines between successive points.
   // 2. Initialize the tangents at every point as the average of the secants.
 
-  // Then, for each segment…
+  // Then, for each segment_u2026
   while (++i < j) {
     d = d3_svg_lineSlope(points[i], points[i + 1]);
 
@@ -423,3 +428,13 @@ function d3_svg_lineMonotone(points) {
       ? d3_svg_lineLinear(points)
       : points[0] + d3_svg_lineHermite(points, d3_svg_lineMonotoneTangents(points));
 }
+
+D3SVGLine._lineInterpolators = d3_svg_lineInterpolators;
+D3SVGLine._line = d3_svg_line;
+D3SVGLine._lineX = d3_svg_lineX;
+D3SVGLine._lineY = d3_svg_lineY;
+D3SVGLine._lineLinear = d3_svg_lineLinear;
+D3SVGLine._lineStepBefore = d3_svg_lineStepBefore;
+D3SVGLine._lineStepAfter = d3_svg_lineStepAfter;
+
+module.exports = D3SVGLine;

@@ -1,9 +1,11 @@
+var D3XHR = require("../core/xhr");
+
 function d3_dsv(delimiter, mimeType) {
   var reFormat = new RegExp("[\"" + delimiter + "\n]"),
       delimiterCode = delimiter.charCodeAt(0);
 
   function dsv(url, callback) {
-    return d3.xhr(url, mimeType, callback).response(response);
+    return D3XHR(url, mimeType, callback).response(response);
   }
 
   function response(request) {
@@ -95,3 +97,5 @@ function d3_dsv(delimiter, mimeType) {
 
   return dsv;
 }
+
+exports._dsv = d3_dsv;

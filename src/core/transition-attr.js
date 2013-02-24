@@ -1,3 +1,8 @@
+var d3_transitionPrototype = require("./transition")._transitionPrototype,
+    d3_interpolateByName = require("./interpolate")._interpolateByName,
+    d3_transition_tween = require("./transition-tween")._tween,
+    D3NS = require("./ns");
+
 d3_transitionPrototype.attr = function(nameNS, value) {
   if (arguments.length < 2) {
 
@@ -9,7 +14,7 @@ d3_transitionPrototype.attr = function(nameNS, value) {
   }
 
   var interpolate = d3_interpolateByName(nameNS),
-      name = d3.ns.qualify(nameNS);
+      name = D3NS.qualify(nameNS);
 
   // For attr(string, null), remove the attribute with the specified name.
   function attrNull() {
@@ -37,7 +42,7 @@ d3_transitionPrototype.attr = function(nameNS, value) {
 };
 
 d3_transitionPrototype.attrTween = function(nameNS, tween) {
-  var name = d3.ns.qualify(nameNS);
+  var name = D3NS.qualify(nameNS);
 
   function attrTween(d, i) {
     var f = tween.call(this, d, i, this.getAttribute(name));

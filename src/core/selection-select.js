@@ -1,3 +1,8 @@
+var D3Selection = require("./selection"),
+    d3_selectionPrototype = D3Selection._selectionPrototype,
+    d3_selection = D3Selection._selection,
+    d3_select = D3Selection._select;
+
 d3_selectionPrototype.select = function(selector) {
   var subgroups = [],
       subgroup,
@@ -28,3 +33,5 @@ function d3_selection_selector(selector) {
     return d3_select(selector, this);
   };
 }
+
+exports._selector = d3_selection_selector;

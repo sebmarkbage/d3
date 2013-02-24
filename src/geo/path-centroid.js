@@ -1,3 +1,9 @@
+var D3GeoCentroid = require("./centroid"),
+    d3_geo_centroidDimension = D3GeoCentroid._centroidDimension,
+    d3_geo_centroidX = D3GeoCentroid._centroidX,
+    d3_geo_centroidY = D3GeoCentroid._centroidY,
+    d3_geo_centroidZ = D3GeoCentroid._centroidZ;
+
 // TODO Unify this code with d3.geom.polygon centroid?
 // TODO Enforce positive area for exterior, negative area for interior?
 
@@ -62,13 +68,13 @@ function d3_geo_pathCentroidRingStart() {
     d3_geo_centroidX = d3_geo_centroidY = d3_geo_centroidZ = 0;
   }
 
-  // For the first point, …
+  // For the first point, _u2026
   d3_geo_pathCentroid.point = function(x, y) {
     d3_geo_pathCentroid.point = nextPoint;
     x00 = x0 = x, y00 = y0 = y;
   };
 
-  // For subsequent points, …
+  // For subsequent points, _u2026
   function nextPoint(x, y) {
     var z = y0 * x - x0 * y;
     d3_geo_centroidX += z * (x0 + x);
@@ -82,3 +88,5 @@ function d3_geo_pathCentroidRingStart() {
     nextPoint(x00, y00);
   };
 }
+
+exports._pathCentroid = d3_geo_pathCentroid;

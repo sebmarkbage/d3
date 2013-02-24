@@ -1,3 +1,9 @@
+var D3Selection = require("./selection"),
+    d3_selectionPrototype = D3Selection._selectionPrototype,
+    d3_Map = require("./map")._Map,
+    d3_selection_enter = require("./selection-enter")._enter,
+    d3_selection = D3Selection._selection;
+
 d3_selectionPrototype.data = function(value, key) {
   var i = -1,
       n = this.length,

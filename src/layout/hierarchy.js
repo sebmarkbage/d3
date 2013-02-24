@@ -1,4 +1,7 @@
-d3.layout.hierarchy = function() {
+var D3Rebind = require("../core/rebind"),
+    D3Merge = require("../core/merge");
+
+var D3LayoutHierarchy = function() {
   var sort = d3_layout_hierarchySort,
       children = d3_layout_hierarchyChildren,
       value = d3_layout_hierarchyValue;
@@ -81,7 +84,7 @@ d3.layout.hierarchy = function() {
 
 // A method assignment helper for hierarchy subclasses.
 function d3_layout_hierarchyRebind(object, hierarchy) {
-  d3.rebind(object, hierarchy, "sort", "children", "value");
+  D3Rebind(object, hierarchy, "sort", "children", "value");
 
   // Add an alias for nodes and links, for convenience.
   object.nodes = object;
@@ -104,9 +107,13 @@ function d3_layout_hierarchySort(a, b) {
 
 // Returns an array source+target objects for the specified nodes.
 function d3_layout_hierarchyLinks(nodes) {
-  return d3.merge(nodes.map(function(parent) {
+  return D3Merge(nodes.map(function(parent) {
     return (parent.children || []).map(function(child) {
       return {source: parent, target: child};
     });
   }));
 }
+
+D3LayoutHierarchy._hierarchyRebind = d3_layout_hierarchyRebind;
+
+module.exports = D3LayoutHierarchy;

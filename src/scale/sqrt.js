@@ -1,3 +1,7 @@
-d3.scale.sqrt = function() {
-  return d3.scale.pow().exponent(.5);
+var D3ScalePow = require("./pow");
+
+var D3ScaleSqrt = function() {
+  return D3ScalePow().exponent(.5);
 };
+
+module.exports = D3ScaleSqrt;

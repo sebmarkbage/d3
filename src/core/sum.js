@@ -1,4 +1,4 @@
-d3.sum = function(array, f) {
+var D3Sum = function(array, f) {
   var s = 0,
       n = array.length,
       a,
@@ -12,3 +12,5 @@ d3.sum = function(array, f) {
 
   return s;
 };
+
+module.exports = D3Sum;
