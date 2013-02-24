@@ -1,7 +1,6 @@
 var D3Selection = require("./selection"),
     d3_selectionPrototype = D3Selection._selectionPrototype,
     d3_Map = require("./map")._Map,
-    d3_selection_enter = require("./selection-enter")._enter,
     d3_selection = D3Selection._selection;
 
 d3_selectionPrototype.data = function(value, key) {
@@ -97,7 +96,7 @@ d3_selectionPrototype.data = function(value, key) {
     exit.push(exitNodes);
   }
 
-  var enter = d3_selection_enter([]),
+  var enter = require("./selection-enter")._enter([]),
       update = d3_selection([]),
       exit = d3_selection([]);
 

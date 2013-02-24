@@ -1,6 +1,4 @@
-var D3TimeFormatUtc = require("./format-utc");
-
-var d3_time_formatIso = D3TimeFormatUtc("%Y-%m-%dT%H:%M:%S.%LZ");
+var d3_time_formatIso = require("./format-utc")("%Y-%m-%dT%H:%M:%S.%LZ");
 
 var D3TimeFormatIso = Date.prototype.toISOString ? d3_time_formatIsoNative : d3_time_formatIso;
 

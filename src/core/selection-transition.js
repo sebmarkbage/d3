@@ -1,17 +1,14 @@
 var D3Transition = require("./transition"),
     d3_selectionPrototype = require("./selection")._selectionPrototype,
-    d3_transitionInheritId = D3Transition._transitionInheritId,
-    d3_transitionId = D3Transition._transitionId,
-    d3_transitionInherit = D3Transition._transitionInherit,
     d3_transitionNode = D3Transition._transitionNode,
     d3_transition = D3Transition._transition;
 
 d3_selectionPrototype.transition = function() {
-  var id = d3_transitionInheritId || ++d3_transitionId,
+  var id = D3Transition._transitionInheritId || ++D3Transition._transitionId,
       subgroups = [],
       subgroup,
       node,
-      transition = Object.create(d3_transitionInherit);
+      transition = Object.create(D3Transition._transitionInherit);
 
   transition.time = Date.now();
 

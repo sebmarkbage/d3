@@ -1,7 +1,6 @@
-var d3_selection_enterPrototype = require("./selection-enter")._enterPrototype,
-    d3_selection = require("./selection")._selection;
+var d3_selection = require("./selection")._selection;
 
-d3_selection_enterPrototype.select = function(selector) {
+require("./selection-enter")._enterPrototype.select = function(selector) {
   var subgroups = [],
       subgroup,
       subnode,

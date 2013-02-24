@@ -25,7 +25,7 @@ d3_transitionPrototype.node = d3_selectionPrototype.node;
 
 var D3Transition = function(selection) {
   return arguments.length
-      ? (d3_transitionInheritId ? selection.transition() : selection)
+      ? (D3Transition._transitionInheritId ? selection.transition() : selection)
       : d3_selectionRoot.transition();
 };
 

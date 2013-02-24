@@ -2,7 +2,7 @@ var d3_geo_cartesian = require("./cartesian")._cartesian,
     _u03b5 = require("../core/core")._u03b5;
 
 function d3_geo_resample(project) {
-  var _u03b42 = .5, // precision, px_u00b2
+  var _u03b42 = .5, // precision, px²
       maxDepth = 16;
 
   function resample(stream) {

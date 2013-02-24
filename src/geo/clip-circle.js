@@ -12,7 +12,7 @@ var D3 = require("../core/core"),
     d3_geo_cartesianAdd = D3GeoCartesian._cartesianAdd,
     d3_geo_spherical = D3GeoSpherical._spherical;
 
-// Clip features against a circle centered at [0_u00b0, 0_u00b0], with a given radius.
+// Clip features against a circle centered at [0°, 0°], with a given radius.
 function d3_geo_clipCircle(degrees) {
   var radians = degrees * d3_radians,
       cr = Math.cos(radians),

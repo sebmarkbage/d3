@@ -31,7 +31,7 @@ var D3LayoutStack = function() {
     series = D3Permute(series, orders);
     points = D3Permute(points, orders);
 
-    // Compute the baseline_u2026
+    // Compute the baseline…
     var offsets = offset.call(stack, points, index);
 
     // And propagate it to other series.

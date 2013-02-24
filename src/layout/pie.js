@@ -81,7 +81,7 @@ var D3LayoutPie = function() {
   };
 
   /**
-   * Specifies the overall end angle of the pie chart. Defaults to 2_u03c0. The
+   * Specifies the overall end angle of the pie chart. Defaults to 2π. The
    * end angle can be specified either as a constant or as a function; in the
    * case of a function, it is evaluated once per array (as opposed to per
    * element).

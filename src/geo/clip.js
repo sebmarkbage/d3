@@ -217,11 +217,11 @@ function d3_geo_clipBufferListener() {
   };
 }
 
-// Approximate polygon ring area (_u00d72, since we only need the sign).
-// For an invisible polygon ring, we rotate longitudinally by 180_u00b0.
+// Approximate polygon ring area (×2, since we only need the sign).
+// For an invisible polygon ring, we rotate longitudinally by 180°.
 // The invisible parameter should be 1, or -1 to rotate longitudinally.
 // Based on Robert. G. Chamberlain and William H. Duquette,
-// _u201cSome Algorithms for Polygons on a Sphere_u201d,
+// “Some Algorithms for Polygons on a Sphere”,
 // http://trs-new.jpl.nasa.gov/dspace/handle/2014/40409
 function d3_geo_clipAreaRing(ring, invisible) {
   if (!(n = ring.length)) return 0;
@@ -235,8 +235,8 @@ function d3_geo_clipAreaRing(ring, invisible) {
       x0 = Math.atan2(invisible * Math.sin(_u03bb) * cos_u03c6, Math.sin(_u03c6)),
       y0 = 1 - invisible * Math.cos(_u03bb) * cos_u03c6,
       x1 = x0,
-      x, // _u03bb'; _u03bb rotated to south pole.
-      y; // _u03c6' = 1 + sin(_u03c6); _u03c6 rotated to south pole.
+      x, // λ'; λ rotated to south pole.
+      y; // φ' = 1 + sin(φ); φ rotated to south pole.
   while (++i < n) {
     p = ring[i];
     cos_u03c6 = Math.cos(_u03c6 = p[1]);
@@ -251,7 +251,7 @@ function d3_geo_clipAreaRing(ring, invisible) {
     // goes through the south pole, the area is 0.
     if (Math.abs(y) < _u03b5 || Math.abs(y0) < _u03b5) {}
 
-    // If this segment goes through either pole_u2026
+    // If this segment goes through either pole…
     else if (Math.abs(Math.abs(x - x0) - _u03c0) < _u03b5) {
       // For the north pole, compute lune area.
       if (y + y0 > 2) area += 4 * (x - x0);
@@ -262,7 +262,7 @@ function d3_geo_clipAreaRing(ring, invisible) {
     else if (Math.abs(y0 - 2) < _u03b5) area += 4 * (x - x1);
 
     // Otherwise, the spherical triangle area is approximately
-    // _u03b4_u03bb * (1 + sin_u03c60 + 1 + sin_u03c6) / 2.
+    // δλ * (1 + sinφ0 + 1 + sinφ) / 2.
     else area += ((3 * _u03c0 + x - x0) % (2 * _u03c0) - _u03c0) * (y0 + y);
 
     x1 = x0, x0 = x, y0 = y;

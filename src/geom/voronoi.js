@@ -18,8 +18,8 @@ var _u03b5 = require("../core/core")._u03b5,
 // computing the tessellation.
 
 /**
- * @param vertices [[x1, y1], [x2, y2], _u2026]
- * @returns polygons [[[x1, y1], [x2, y2], _u2026], _u2026]
+ * @param vertices [[x1, y1], [x2, y2], …]
+ * @returns polygons [[[x1, y1], [x2, y2], …], …]
  */
 var D3GeomVoronoi = function(vertices) {
   var polygons = vertices.map(function() { return []; }),
@@ -81,16 +81,16 @@ var D3GeomVoronoi = function(vertices) {
         x2 = p2[0], y2 = p2[1],
         dx = Math.abs(x2 - x1), dy = y2 - y1;
 
-    if (Math.abs(dy) < _u03b5) { // 0_u00b0
+    if (Math.abs(dy) < _u03b5) { // 0°
       var y = y0 < y1 ? -Z : Z;
       polygon.push([-Z, y], [Z, y]);
-    } else if (dx < _u03b5) { // _u00b190_u00b0
+    } else if (dx < _u03b5) { // ±90°
       var x = x0 < x1 ? -Z : Z;
       polygon.push([x, -Z], [x, Z]);
     } else {
       var y = (x2 - x1) * (y1 - y0) < (x1 - x0) * (y2 - y1) ? Z : -Z,
           z = Math.abs(dy) - dx;
-      if (Math.abs(z) < _u03b5) { // _u00b145_u00b0
+      if (Math.abs(z) < _u03b5) { // ±45°
         polygon.push([dy < 0 ? y : -y, y]);
       } else {
         if (z > 0) y *= -1;

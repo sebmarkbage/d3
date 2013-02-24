@@ -1,4 +1,5 @@
-var _u03c0 = require("../core/core")._u03c0;
+var _u03c0 = require("../core/core")._u03c0,
+    D3GeoEquirectangular;
 
 function d3_geo_equirectangular(_u03bb, _u03c6) {
   return [_u03bb, _u03c6];

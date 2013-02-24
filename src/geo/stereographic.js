@@ -1,5 +1,6 @@
 var d3_geo_azimuthal = require("./azimuthal")._azimuthal,
-    d3_geo_projection = require("./projection")._projection;
+    d3_geo_projection = require("./projection")._projection,
+    D3GeoStereographic;
 
 var d3_geo_stereographic = d3_geo_azimuthal(
   function(cos_u03bbcos_u03c6) { return 1 / (1 + cos_u03bbcos_u03c6); },

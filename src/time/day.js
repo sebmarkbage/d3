@@ -1,8 +1,8 @@
-var d3_time_interval = require("./interval")._interval,
-    d3_time = require("./time")._time;
+var D3Time = require("./time"),
+    d3_time_interval = require("./interval")._interval;
 
 var D3TimeDay = d3_time_interval(function(date) {
-  var day = new d3_time(1970, 0);
+  var day = new D3Time._time(1970, 0);
   day.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
   return day;
 }, function(date, offset) {

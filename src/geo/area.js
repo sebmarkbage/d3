@@ -35,19 +35,19 @@ var d3_geo_area = {
 function d3_geo_areaRingStart() {
   var _u03bb00, _u03c600, _u03bb0, cos_u03c60, sin_u03c60; // start point and two previous points
 
-  // For the first point, _u2026
+  // For the first point, …
   d3_geo_area.point = function(_u03bb, _u03c6) {
     d3_geo_area.point = nextPoint;
     _u03bb0 = (_u03bb00 = _u03bb) * d3_radians, cos_u03c60 = Math.cos(_u03c6 = (_u03c600 = _u03c6) * d3_radians / 2 + _u03c0 / 4), sin_u03c60 = Math.sin(_u03c6);
   };
 
-  // For subsequent points, _u2026
+  // For subsequent points, …
   function nextPoint(_u03bb, _u03c6) {
     _u03bb *= d3_radians;
     _u03c6 = _u03c6 * d3_radians / 2 + _u03c0 / 4; // half the angular distance from south pole
 
     // Spherical excess E for a spherical triangle with vertices: south pole,
-    // previous point, current point.  Uses a formula derived from Cagnoli_u2019s
+    // previous point, current point.  Uses a formula derived from Cagnoli’s
     // theorem.  See Todhunter, Spherical Trig. (1871), Sec. 103, Eq. (2).
     var d_u03bb = _u03bb - _u03bb0,
         cos_u03c6 = Math.cos(_u03c6),
@@ -57,7 +57,7 @@ function d3_geo_areaRingStart() {
         v0 = d3_geo_areaRingV,
         u = cos_u03c60 * cos_u03c6 + k * Math.cos(d_u03bb),
         v = k * Math.sin(d_u03bb);
-    // _u2211 arg(z) = arg(_u220f z), where z = u + iv.
+    // ∑ arg(z) = arg(∏ z), where z = u + iv.
     d3_geo_areaRingU = u0 * u - v0 * v;
     d3_geo_areaRingV = v0 * u + u0 * v;
 

@@ -50,7 +50,7 @@ var D3GeoCircle = function() {
   return circle.angle(90);
 };
 
-// Interpolates along a circle centered at [0_u00b0, 0_u00b0], with a given radius and
+// Interpolates along a circle centered at [0°, 0°], with a given radius and
 // precision.
 function d3_geo_circleInterpolate(radians, precision) {
   var cr = Math.cos(radians),

@@ -36,14 +36,14 @@ var D3LayoutChord = function() {
       k += x;
     }
 
-    // Sort groups_u2026
+    // Sort groups…
     if (sortGroups) {
       groupIndex.sort(function(a, b) {
         return sortGroups(groupSums[a], groupSums[b]);
       });
     }
 
-    // Sort subgroups_u2026
+    // Sort subgroups…
     if (sortSubgroups) {
       subgroupIndex.forEach(function(d, i) {
         d.sort(function(a, b) {

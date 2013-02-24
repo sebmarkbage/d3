@@ -1,7 +1,7 @@
 var d3_geo_compose = require("./compose")._compose,
     _u03c0 = require("../core/core")._u03c0;
 
-// Note: |_u03b4_u03bb| and |_u03b4_u03c6| must be < 2_u03c0
+// Note: |δλ| and |δφ| must be < 2π
 function d3_geo_rotation(_u03b4_u03bb, _u03b4_u03c6, _u03b4_u03b3) {
   return _u03b4_u03bb ? (_u03b4_u03c6 || _u03b4_u03b3 ? d3_geo_compose(d3_geo_rotation_u03bb(_u03b4_u03bb), d3_geo_rotation_u03c6_u03b3(_u03b4_u03c6, _u03b4_u03b3))
     : d3_geo_rotation_u03bb(_u03b4_u03bb))

@@ -1,6 +1,5 @@
 var d3_transitionPrototype = require("./transition")._transitionPrototype,
     d3_interpolateByName = require("./interpolate")._interpolateByName,
-    d3_transition_tween = require("./transition-tween")._tween,
     d3_window = require("./core")._window;
 
 d3_transitionPrototype.style = function(name, value, priority) {
@@ -31,7 +30,7 @@ d3_transitionPrototype.style = function(name, value, priority) {
   }
 
   // Otherwise, a name, value and priority are specified, and handled as below.
-  return d3_transition_tween(this, "style." + name, value, function(b) {
+  return require("./transition-tween")._tween(this, "style." + name, value, function(b) {
 
     // For style(name, string) or style(name, string, priority), set the style
     // property with the specified name, using the specified priority.

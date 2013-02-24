@@ -1,7 +1,6 @@
 var D3Time = require("./time"),
     D3Map = require("../core/map"),
     D3TimeFormatEnUS = require("./format-en_US"),
-    d3_time = D3Time._time,
     d3_Map = D3Map._Map,
     d3_time_days = D3TimeFormatEnUS._days,
     d3_time_dayAbbreviations = D3TimeFormatEnUS._dayAbbreviations,
@@ -44,7 +43,7 @@ var D3TimeFormat = function(template) {
     // The am-pm flag is 0 for AM, and 1 for PM.
     if ("p" in d) d.H = d.H % 12 + d.p * 12;
 
-    var date = new d3_time();
+    var date = new D3Time._time();
     date.setFullYear(d.y, d.m, d.d);
     date.setHours(d.H, d.M, d.S, d.L);
     return date;

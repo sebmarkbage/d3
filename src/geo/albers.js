@@ -1,7 +1,8 @@
 var D3 = require("../core/core"),
     d3_radians = D3._radians,
     d3_geo_projectionMutator = require("./projection")._projectionMutator,
-    d3_degrees = D3._degrees;
+    d3_degrees = D3._degrees,
+    D3GeoAlbers;
 
 function d3_geo_albers(_u03c60, _u03c61) {
   var sin_u03c60 = Math.sin(_u03c60),

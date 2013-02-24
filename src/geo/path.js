@@ -1,12 +1,7 @@
 var D3GeoPathArea = require("./path-area"),
     D3GeoCentroid = require("./centroid"),
     D3 = require("../core/core"),
-    d3_geo_pathAreaSum = D3GeoPathArea._pathAreaSum,
     d3_geo_pathArea = D3GeoPathArea._pathArea,
-    d3_geo_centroidDimension = D3GeoCentroid._centroidDimension,
-    d3_geo_centroidX = D3GeoCentroid._centroidX,
-    d3_geo_centroidY = D3GeoCentroid._centroidY,
-    d3_geo_centroidZ = D3GeoCentroid._centroidZ,
     d3_geo_pathCentroid = require("./path-centroid")._pathCentroid,
     d3_geo_bounds = require("./bounds")._bounds,
     d3_identity = require("../core/identity")._identity,
@@ -36,15 +31,15 @@ var D3GeoPath = function() {
   }
 
   path.area = function(object) {
-    d3_geo_pathAreaSum = 0;
+    D3GeoPathArea._pathAreaSum = 0;
     D3GeoStream(object, projectStream(d3_geo_pathArea));
-    return d3_geo_pathAreaSum;
+    return D3GeoPathArea._pathAreaSum;
   };
 
   path.centroid = function(object) {
-    d3_geo_centroidDimension = d3_geo_centroidX = d3_geo_centroidY = d3_geo_centroidZ = 0;
+    D3GeoCentroid._centroidDimension = D3GeoCentroid._centroidX = D3GeoCentroid._centroidY = D3GeoCentroid._centroidZ = 0;
     D3GeoStream(object, projectStream(d3_geo_pathCentroid));
-    return d3_geo_centroidZ ? [d3_geo_centroidX / d3_geo_centroidZ, d3_geo_centroidY / d3_geo_centroidZ] : undefined;
+    return D3GeoCentroid._centroidZ ? [D3GeoCentroid._centroidX / D3GeoCentroid._centroidZ, D3GeoCentroid._centroidY / D3GeoCentroid._centroidZ] : undefined;
   };
 
   path.bounds = function(object) {

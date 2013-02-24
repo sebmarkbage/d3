@@ -1,5 +1,6 @@
 var _u03c0 = require("../core/core")._u03c0,
-    d3_geo_projection = require("./projection")._projection;
+    d3_geo_projection = require("./projection")._projection,
+    D3GeoMercator;
 
 function d3_geo_mercator(_u03bb, _u03c6) {
   return [

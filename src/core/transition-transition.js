@@ -1,12 +1,11 @@
 var D3Transition = require("./transition"),
     d3_transitionPrototype = D3Transition._transitionPrototype,
-    d3_transitionId = D3Transition._transitionId,
     d3_transitionNode = D3Transition._transitionNode,
     d3_transition = D3Transition._transition;
 
 d3_transitionPrototype.transition = function() {
   var id0 = this.id,
-      id1 = ++d3_transitionId,
+      id1 = ++D3Transition._transitionId,
       subgroups = [],
       subgroup,
       group,

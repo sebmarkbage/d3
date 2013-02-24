@@ -1,5 +1,6 @@
 var d3_geo_azimuthal = require("./azimuthal")._azimuthal,
-    d3_geo_projection = require("./projection")._projection;
+    d3_geo_projection = require("./projection")._projection,
+    D3GeoOrthographic;
 
 var d3_geo_orthographic = d3_geo_azimuthal(
   function() { return 1; },

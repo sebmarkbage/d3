@@ -1,6 +1,6 @@
 var D3Round = require("./round");
 
-var d3_formatPrefixes = ["y","z","a","f","p","n","_u00b5","m","","k","M","G","T","P","E","Z","Y"].map(d3_formatPrefix);
+var d3_formatPrefixes = ["y","z","a","f","p","n","\u00b5","m","","k","M","G","T","P","E","Z","Y"].map(d3_formatPrefix);
 
 var D3FormatPrefix = function(value, precision) {
   var i = 0;

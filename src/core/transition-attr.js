@@ -1,6 +1,5 @@
 var d3_transitionPrototype = require("./transition")._transitionPrototype,
     d3_interpolateByName = require("./interpolate")._interpolateByName,
-    d3_transition_tween = require("./transition-tween")._tween,
     D3NS = require("./ns");
 
 d3_transitionPrototype.attr = function(nameNS, value) {
@@ -24,7 +23,7 @@ d3_transitionPrototype.attr = function(nameNS, value) {
     this.removeAttributeNS(name.space, name.local);
   }
 
-  return d3_transition_tween(this, "attr." + nameNS, value, function(b) {
+  return require("./transition-tween")._tween(this, "attr." + nameNS, value, function(b) {
 
     // For attr(string, string), set the attribute with the specified name.
     function attrString() {

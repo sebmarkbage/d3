@@ -336,7 +336,7 @@ var d3_svg_lineBasisBezier1 = [0, 2/3, 1/3, 0],
     d3_svg_lineBasisBezier2 = [0, 1/3, 2/3, 0],
     d3_svg_lineBasisBezier3 = [0, 1/6, 2/3, 1/6];
 
-// Pushes a "C" B_u00e9zier curve onto the specified path array, given the
+// Pushes a "C" Bézier curve onto the specified path array, given the
 // two specified four-element arrays which define the control points.
 function d3_svg_lineBasisBezier(path, x, y) {
   path.push(
@@ -386,7 +386,7 @@ function d3_svg_lineMonotoneTangents(points) {
   // 1. Compute the slopes of the secant lines between successive points.
   // 2. Initialize the tangents at every point as the average of the secants.
 
-  // Then, for each segment_u2026
+  // Then, for each segment…
   while (++i < j) {
     d = d3_svg_lineSlope(points[i], points[i + 1]);
 
