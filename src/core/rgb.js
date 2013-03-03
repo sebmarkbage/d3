@@ -1,11 +1,12 @@
 var d3_Color = require("./color")._Color,
     d3_xyz_lab = require("./xyz")._lab,
-    D3Map = require("./map");
+    D3Map = require("./map"),
+    d3_hsl = require("./hsl");
 
 var D3RGB = function(r, g, b) {
   return arguments.length === 1
       ? (r instanceof d3_Rgb ? d3_rgb(r.r, r.g, r.b)
-      : d3_rgb_parse("" + r, d3_rgb, require("./hsl")._rgb))
+      : d3_rgb_parse("" + r, d3_rgb, d3_hsl._rgb))
       : d3_rgb(~~r, ~~g, ~~b);
 };
 
@@ -127,7 +128,7 @@ function d3_rgb_hsl(r, g, b) {
   } else {
     s = h = 0;
   }
-  return require("./hsl")._hsl(h, s, l);
+  return d3_hsl._hsl(h, s, l);
 }
 
 function d3_rgb_lab(r, g, b) {
@@ -300,7 +301,7 @@ var d3_rgb_names = D3Map({
 });
 
 d3_rgb_names.forEach(function(key, value) {
-  d3_rgb_names.set(key, d3_rgb_parse(value, d3_rgb, require("./hsl")._rgb));
+  d3_rgb_names.set(key, d3_rgb_parse(value, d3_rgb, d3_hsl._rgb));
 });
 
 D3RGB._names = d3_rgb_names;
